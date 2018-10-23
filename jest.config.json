@@ -3,6 +3,6 @@
     "enzyme-to-json/serializer"
   ],
   "setupFiles": [
-	"<rootDir>/src/tests/setupEnzyme.js"
+	"<rootDir>/tests/setupTests.js"
   ]
 }

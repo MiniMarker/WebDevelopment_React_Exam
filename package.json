@@ -10,8 +10,10 @@
 		"test": "jest --config=jest.config.json",
 	  	"test:watch": "jest --config=jest.config.json --watchAll",
 	  	"test:cov": "jest --config=jest.config.json --coverage",
+
 		"dev:node": "webpack --mode development && npm run startNode",
 	  	"dev:server": "webpack-dev-server --open --mode development",
+
 		"build": "webpack --mode production",
 		"startNode": "node server/server.js"
 	},
