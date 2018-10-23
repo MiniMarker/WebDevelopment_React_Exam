@@ -1,18 +1,21 @@
 {
-	"name": "connect4",
+	"name": "exam_marchr16",
 	"version": "1.0.0",
-	"description": "",
+	"description": "This is my exam-delivery project in PG6300: Web Development and API-design",
 	"main": "index.js",
+  	"author": "Christian Marker",
+  	"license": "MIT",
+  	"private": false,
 	"scripts": {
 		"test": "jest --config=jest.config.json",
-		"dev": "webpack --mode development && npm run start",
+	  	"test:watch": "jest --config=jest.config.json --watchAll",
+	  	"test:cov": "jest --config=jest.config.json --coverage",
+		"dev:node": "webpack --mode development && npm run startNode",
+	  	"dev:server": "webpack-dev-server --open --mode development",
 		"build": "webpack --mode production",
-		"start": "node src/server/server.js",
-		"dev-server": "webpack-dev-server --open --mode development"
+		"startNode": "node server/server.js"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "ISC",
 	"dependencies": {
 		"babel-cli": "6.24.1",
 		"babel-core": "^6.26.3",
@@ -56,12 +59,5 @@
 		"style-loader": "0.18.2",
 		"uuid": "3.1.0",
 		"validator": "8.0.0"
-	},
-	"jest": {
-		"testEnvironment": "node",
-		"testRegex": "tests/.*\\.test\\.(js|jsx)$",
-		"collectCoverageFrom": [
-			"src/**.(js|jsx)"
-		]
 	}
 }
