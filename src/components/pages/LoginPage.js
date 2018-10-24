@@ -10,8 +10,6 @@ class LoginPage extends React.Component {
 			password: "",
 			errorMsg: null
 		};
-
-		this.doLogIn = this.doLogIn.bind(this);
 	};
 
 	onUsernameChange = (event) => {
@@ -26,11 +24,12 @@ class LoginPage extends React.Component {
 		})
 	};
 
-	doLogIn = async () => {
+	handleLogin = async (event) => {
+
+		event.preventDefault();
+
 		const { username, password } = this.state;
-
 		const url = "/api/login";
-
 		const payload = { username: username, password: password };
 
 		let response;
@@ -72,21 +71,19 @@ class LoginPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<div>
-					<p>Username</p>
+				<form onSubmit={this.handleLogin}>
 					<input
 						type={"text"}
 						onChange={this.onUsernameChange}
+						placeholder={"Username"}
 					/>
-				</div>
-				<div>
-					<p>Password</p>
 					<input
-						type={"password"}
+						type={"text"}
 						onChange={this.onPasswordChange}
+						placeholder={"Password"}
 					/>
-				</div>
-				<div className={"loginBtn"} onClick={this.doLogIn}>Login</div>
+					<button>Login</button>
+				</form>
 			</div>
 		);
 	}

@@ -31,7 +31,9 @@ class SignupPage extends React.Component {
 		})
 	};
 
-	handleSignup = async () => {
+	handleSignup = async (event) => {
+
+		event.preventDefault();
 
 		const {username, password, confirmPassword} = this.state;
 
@@ -47,7 +49,6 @@ class SignupPage extends React.Component {
 			password: password
 		};
 
-		console.log("payload:", payload);
 		let response;
 
 		try {
@@ -76,8 +77,6 @@ class SignupPage extends React.Component {
 			return;
 		}
 
-		console.log("SUCCESS!");
-
 		this.setState({ errorMsg: null });
 		this.props.history.push("/");
 
@@ -86,31 +85,24 @@ class SignupPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<div>
-					<p>Username</p>
+				<form onSubmit={this.handleSignup}>
 					<input
 						type={"text"}
 						onChange={this.onUsernameChange}
+						placeholder={"Username"}
 					/>
-				</div>
-				<div>
-					<p>Password</p>
 					<input
-						type={"password"}
+						type={"text"}
 						onChange={this.onPasswordChange}
+						placeholder={"Password"}
 					/>
-				</div>
-				<div>
-					<p>Confirm Password</p>
 					<input
-						type={"password"}
+						type={"text"}
 						onChange={this.onConfirmPasswordChange}
+						placeholder={"ConfirmPassword"}
 					/>
-				</div>
-
-				{this.state.errorMsg || <p>{this.state.errorMsg}</p>}
-
-				<div className={"loginBtn"} onClick={this.handleSignup}>Login</div>
+					<button>Sign up</button>
+				</form>
 			</div>
 		);
 	}

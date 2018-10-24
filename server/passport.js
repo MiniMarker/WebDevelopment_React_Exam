@@ -2,22 +2,22 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./entities/user');
 
-passport.use(new LocalStrategy(
-	{
+passport.use(new LocalStrategy({
+
 		usernameField: 'username',
 		passwordField: 'password'
-	},
-	function (username, password, done) {
+
+	}, function (username, password, done) {
 
 		const ok = User.verifyUser(username, password);
 
 		if (!ok) {
-			return done(null, false, {message: 'Invalid username/password'});
+			return done(null, false, {
+				message: 'Invalid username/password'
+			});
 		}
 
 		const user = User.getUser(username);
-
-		console.log("logged in!", user);
 
 		return done(null, user);
 	}
