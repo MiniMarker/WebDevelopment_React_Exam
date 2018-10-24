@@ -14,5 +14,9 @@
     <orderEntry type="library" name="@types/webpack" level="application" />
     <orderEntry type="library" name="@types/enzyme-adapter-react-16" level="application" />
     <orderEntry type="library" name="@types/enzyme" level="application" />
+    <orderEntry type="library" name="@types/express" level="application" />
+    <orderEntry type="library" name="@types/body-parser" level="application" />
+    <orderEntry type="library" name="@types/passport" level="application" />
+    <orderEntry type="library" name="@types/passport-local" level="application" />
   </component>
 </module>

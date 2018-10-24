@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+require("babel-core/register");
+require("babel-polyfill");
 
 import AppRouter from './routers/AppRouter';
 

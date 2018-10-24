@@ -3,7 +3,10 @@ const path = require('path');
 const APP_PATH = path.join(__dirname, "public");
 
 module.exports = {
-	entry: "./src/app.js",
+	entry: [
+		"babel-polyfill",
+		"./src/app.js"
+	],
 	output: {
 		path: APP_PATH,
 		filename: "bundle.js"
@@ -19,11 +22,12 @@ module.exports = {
 				"css-loader",
 				"sass-loader"
 			],
-			test: /\.s?css$/,
+			test: /\.s?css$/
 		}]
 	},
 	devtool: "cheap-module-eval-source-map",
 	devServer: {
-		contentBase: APP_PATH
+		contentBase: APP_PATH,
+		historyApiFallback: true
 	}
 };
