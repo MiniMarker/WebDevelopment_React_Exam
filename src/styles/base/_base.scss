@@ -2,6 +2,27 @@ body {
 	font-family: Helvetica, Arial, sans-serif;
 }
 
-.header-link-is-active{
-	font-weight: bold;
+.container {
+	display: flex;
+	justify-content: center;
 }
+
+.auth_form {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+
+	input {
+		padding: 10px;
+		margin: 10px;
+	}
+
+	button {
+		padding: 10px;
+		margin: 10px;
+		background-color: #7f7f7f;
+		border: #555555;
+		color: whitesmoke;
+	}
+}
+

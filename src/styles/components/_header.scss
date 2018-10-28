@@ -1,0 +1,36 @@
+.header {
+	background-color: #333333;
+	color: whitesmoke;
+	top: -22px;
+	position: relative;
+	padding: 10px 10px 10px 10px;
+}
+
+.header__title {
+	text-align: center;
+}
+
+.header__links {
+	display: flex;
+	justify-content: space-between;
+}
+
+.header__link-active {
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+
+.header__link {
+	text-decoration: none;
+	color: white;
+}
+
+.header__link:hover {
+	text-decoration: underline;
+	color: white;
+}
+
+.header__link-auth {
+	margin-right: 20px;
+}

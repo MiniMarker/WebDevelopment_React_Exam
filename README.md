@@ -12,7 +12,6 @@
 - Travis CI
 - SASS
 
-
 **Upcoming extras**
 - AWS
 

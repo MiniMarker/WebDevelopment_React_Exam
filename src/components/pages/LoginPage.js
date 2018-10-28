@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {login} from "../../actions/auth";
 
-class LoginPage extends React.Component {
+export class LoginPage extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -71,8 +71,8 @@ class LoginPage extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<form onSubmit={this.handleLogin}>
+			<div className={"container"}>
+				<form className={"auth_form"} onSubmit={this.handleLogin}>
 					<input
 						type={"text"}
 						onChange={this.onUsernameChange}

@@ -1,6 +1,7 @@
 import React from 'react';
+import {connect} from "react-redux";
 
-class HomePage extends React.Component {
+export class HomePage extends React.Component {
 
 	constructor(props){
 		super(props);
@@ -14,12 +15,29 @@ class HomePage extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className={"container"}>
 				<h1>HomePage</h1>
+
+				{this.props.auth.username
+					? <h3>Welcome {this.props.auth.username}!</h3>
+					: <h3>Please log in</h3>
+				}
+
 			</div>
 		);
 	}
-
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+	return {
+		auth: state.auth
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

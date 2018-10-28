@@ -87,8 +87,8 @@ class SignupPage extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<form onSubmit={this.handleSignup}>
+			<div className={"container"}>
+				<form className={"auth_form"} onSubmit={this.handleSignup}>
 					<input
 						type={"text"}
 						onChange={this.onUsernameChange}
