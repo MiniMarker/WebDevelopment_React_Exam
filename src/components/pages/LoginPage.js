@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {login, signup} from "../../actions/auth";
+import {login} from "../../actions/auth";
 
 class LoginPage extends React.Component {
 
@@ -30,9 +30,9 @@ class LoginPage extends React.Component {
 
 		event.preventDefault();
 
-		const { username, password } = this.state;
+		const {username, password} = this.state;
 		const url = "/api/login";
-		const payload = { username: username, password: password };
+		const payload = {username: username, password: password};
 
 		let response;
 
@@ -61,6 +61,7 @@ class LoginPage extends React.Component {
 			});
 			return;
 		}
+
 		this.props.login(username);
 		this.setState({ errorMsg: null });
 		this.props.history.push("/");
@@ -88,7 +89,6 @@ class LoginPage extends React.Component {
 		);
 	}
 }
-
 
 const mapDispatchToProp = (dispatch) => {
 	return {
