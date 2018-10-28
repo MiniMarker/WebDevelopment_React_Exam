@@ -6,3 +6,6 @@
 ## EXTRAS
 - Docker
 - Redux
+
+**Upcoming extras**
+- AWS
