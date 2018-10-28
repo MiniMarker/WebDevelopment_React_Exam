@@ -20,5 +20,21 @@ exports[`should render Header correctly 1`] = `
   >
     Profile
   </NavLink>
+  <br />
+  <br />
+  <NavLink
+    activeClassName="header-link-is-active"
+    aria-current="page"
+    to="/login"
+  >
+    Login
+  </NavLink>
+  <NavLink
+    activeClassName="header-link-is-active"
+    aria-current="page"
+    to="/signup"
+  >
+    Signup
+  </NavLink>
 </header>
 `;
