@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {signup} from "../../actions/auth";
 
 class SignupPage extends React.Component {
 
@@ -77,6 +79,7 @@ class SignupPage extends React.Component {
 			return;
 		}
 
+		this.props.signup(username);
 		this.setState({ errorMsg: null });
 		this.props.history.push("/");
 
@@ -108,4 +111,10 @@ class SignupPage extends React.Component {
 	}
 }
 
-export default SignupPage;
+const mapDispatchToProp = (dispatch) => {
+	return {
+		signup: (username) => dispatch(signup(username))
+	}
+};
+
+export default connect(undefined, mapDispatchToProp)(SignupPage);

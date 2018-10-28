@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {login, signup} from "../../actions/auth";
 
 class LoginPage extends React.Component {
 
@@ -47,8 +49,6 @@ class LoginPage extends React.Component {
 			return;
 		}
 
-		console.log(response);
-
 		if (response.status === 401) {
 			this.setState({ errorMsg: "Invalid userId/password" });
 			return;
@@ -61,11 +61,11 @@ class LoginPage extends React.Component {
 			});
 			return;
 		}
-
+		this.props.login(username);
 		this.setState({ errorMsg: null });
 		this.props.history.push("/");
 
-	}
+	};
 
 
 	render() {
@@ -89,4 +89,11 @@ class LoginPage extends React.Component {
 	}
 }
 
-export default LoginPage;
+
+const mapDispatchToProp = (dispatch) => {
+	return {
+		login: (username) => dispatch(login(username))
+	}
+};
+
+export default connect(undefined, mapDispatchToProp)(LoginPage);
