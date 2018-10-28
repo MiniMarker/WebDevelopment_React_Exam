@@ -21,8 +21,11 @@
 1. Clone this repo
 2. 
     a) Docker
-    - from deploy folder run: `docker-compose up`
+    - from deploy folder run: 
+    - `docker-compose up`
     
-    b) webpack and node
-    - from root folder: run `npm run dev:node`
-3. Enter [http://www.localhost:8080/](localhost:8080)
+    b) Webpack and Node
+    - from root folder: run:
+    - `npm run dev:node`
+3. Enter [localhost:8080](http://www.localhost:8080)
+4. Have fun!
