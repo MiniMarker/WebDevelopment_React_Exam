@@ -25,4 +25,4 @@
     
     b) webpack and node
     - from root folder: run `npm run dev:node`
-3. Enter [http://www.localhost:8080/]
+3. Enter [http://www.localhost:8080/](localhost:8080)
