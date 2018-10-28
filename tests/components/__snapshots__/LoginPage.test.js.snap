@@ -1,8 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderLoginPage 1`] = `
-<div>
+<div
+  className="container"
+>
   <form
+    className="auth_form"
     onSubmit={[Function]}
   >
     <input
