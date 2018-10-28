@@ -10,6 +10,8 @@
 - Redux
 - Testing with Jest
 - Travis CI
+- SASS
+
 
 **Upcoming extras**
 - AWS
