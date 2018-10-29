@@ -17,10 +17,6 @@ class ProfilePage extends React.Component {
 					: <h3>No logged in user</h3>
 				}
 
-				{this.props.auth.username &&
-					<button onClick={this.handleLogout}>Log out</button>
-				}
-
 			</div>
 		);
 	}
@@ -32,11 +28,5 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		logout: () => dispatch(logout())
-	}
-};
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default connect(mapStateToProps)(ProfilePage);

@@ -8,17 +8,11 @@ require("babel-polyfill");
 import AppRouter from './routers/AppRouter';
 import configureStore from "./store/configureStore";
 
+
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 
-
 const store = configureStore();
-
-store.subscribe(() => {
-	const state = store.getState();
-
-	console.log(state);
-});
 
 const jsx = (
 	<Provider store={store}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {NavLink} from 'react-router-dom';
+import {logout} from "../actions/auth";
 
 export class Header extends React.Component {
 
@@ -14,7 +15,7 @@ export class Header extends React.Component {
 		let response;
 
 		try {
-			response = await fetch(url, { method: "post" });
+			response = await fetch(url, { method: "post" })
 		} catch (err) {
 			alert("Failed to connect to server: " + err);
 			return;
@@ -66,10 +67,7 @@ export class Header extends React.Component {
 									activeClassName={"header__link-active"}
 								>Signup</NavLink>
 							</div>
-							: <div>
-								<a className={"header__link"}
-								   href={this.handleLogout}>Logout</a>
-							</div>
+							: <button onClick={this.handleLogout}>Log out</button>
 					}
 				</div>
 			</div>
@@ -84,4 +82,10 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null, null, {pure: false})(Header);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		logout: () => dispatch(logout())
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, null, {pure: false})(Header);
