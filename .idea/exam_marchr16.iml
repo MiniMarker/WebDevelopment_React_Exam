@@ -19,5 +19,6 @@
     <orderEntry type="library" name="@types/passport" level="application" />
     <orderEntry type="library" name="@types/passport-local" level="application" />
     <orderEntry type="library" name="@types/redux-promise-middleware" level="application" />
+    <orderEntry type="library" name="@types/express-session" level="application" />
   </component>
 </module>

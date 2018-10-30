@@ -58,8 +58,8 @@ class SignupPage extends React.Component {
 					this.setState({ errorMsg: "Invalid userId/password" });
 					return;
 
-				case 204:
-					this.props.signup(username);
+				case 200:
+					//this.props.signup(username);
 					this.setState({ errorMsg: null });
 					this.props.history.push("/");
 					return;

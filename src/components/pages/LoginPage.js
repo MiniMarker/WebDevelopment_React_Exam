@@ -50,7 +50,7 @@ export class LoginPage extends React.Component {
 					return;
 
 				case 204:
-					this.props.login(username);
+					//this.props.login(username);
 					this.setState({ errorMsg: null });
 					this.props.history.push("/");
 					return;

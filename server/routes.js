@@ -4,7 +4,6 @@ const passport = require('passport');
 
 const User = require('./entities/user');
 
-
 /*
     The login will apply the Passport filter to check if provided
     username/password are correct.
@@ -30,18 +29,12 @@ router.post('/api/signup', function(req, res) {
 
 	passport.authenticate('local')(req, res, () => {
 
-		console.log(req.session);
-
-		console.log("Going to set isLoggedIn. Currently: " + req.session.isLoggedIn);
-		req.session.isLoggedIn = true;
-		console.log("Set isLoggedIn. Currently: " + req.session.isLoggedIn);
-
 		req.session.save((err) => {
 			if (err) {
 				return next(err);
 			}
 
-			res.status(204).send();
+			res.status(200).send();
 		});
 	});
 
@@ -65,14 +58,14 @@ router.get("/api/user", (req, res) => {
 		and add it to the incoming "req" object
 	 */
 
-	if(req.user) {
+	if(!req.user) {
+		res.status(401).send();
+	} else {
+
 		res.json({
 			username: req.user.username
 		});
-		return;
 	}
-
-	res.status(401).send();
 });
 
 module.exports = router;

@@ -9,20 +9,43 @@ import ProfilePage from "../components/pages/ProfilePage";
 import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
 
-const AppRouter = () => (
-	<BrowserRouter>
-		<div>
-			<Header/>
-			<Switch>
-				<Route path="/" component={HomePage} exact={true}/>
-				<Route path="/profile" component={ProfilePage}/>
-				<Route path="/login" component={LoginPage}/>
-				<Route path="/signup" component={SignupPage}/>
-				<Route component={NotFoundPage}/>
+//TODO make this class based and fetch /api/user component did mount
 
-			</Switch>
-		</div>
-	</BrowserRouter>
-);
+class AppRouter extends React.Component {
+
+	render() {
+		return (
+			<BrowserRouter>
+				<div>
+					<Header/>
+					<Switch>
+						<Route
+							path="/"
+							component={HomePage}
+							checkAuthStatusFunc={this.checkAuthStatus}
+							exact={true}/>
+
+						<Route
+							path="/profile"
+							component={ProfilePage}/>
+							checkAuthStatusFunc={this.checkAuthStatus}
+						<Route
+							path="/login"
+							component={LoginPage}
+							checkAuthStatusFunc={this.checkAuthStatus}/>
+
+						<Route
+							path="/signup"
+							component={SignupPage}
+							checkAuthStatusFunc={this.checkAuthStatus}/>
+
+						<Route component={NotFoundPage}/>
+					</Switch>
+				</div>
+			</BrowserRouter>
+		);
+	}
+
+}
 
 export default AppRouter;
