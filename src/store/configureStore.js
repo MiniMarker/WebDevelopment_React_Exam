@@ -1,12 +1,17 @@
-import {combineReducers, createStore} from "redux";
-
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import thunkMiddleware from 'redux-thunk';
 import authReducer from '../reducers/auth';
+import { sessionReducer } from 'redux-react-session';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const reducers = combineReducers({
+	auth: authReducer,
+	session: sessionReducer
+});
 
 export default () => {
-	return createStore(
-		combineReducers({
-			auth: authReducer
-		}),
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+	return createStore(reducers,
+		composeEnhancers(applyMiddleware(thunkMiddleware))
 	);
 };

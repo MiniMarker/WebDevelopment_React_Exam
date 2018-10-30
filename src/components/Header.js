@@ -12,24 +12,32 @@ export class Header extends React.Component {
 	handleLogout = async () => {
 		const url = "/api/logout";
 
-		let response;
+		await fetch(url, {
+			method: "post"
+		}).then((res, err) => {
 
-		try {
-			response = await fetch(url, { method: "post" })
-		} catch (err) {
-			alert("Failed to connect to server: " + err);
-			return;
-		}
+			if(err) {
+				this.setState({errorMsg: `Error on request: ${err}`});
+				return;
+			}
 
-		if (response.status !== 204) {
-			alert("Error when connecting to server: status code " + response.status);
-			return;
-		}
+			switch(res.status) {
 
-		console.log("Logout success");
+				case 204:
+					console.log("Logout success");
 
-		this.props.logout();
-		this.props.history.push("/");
+					this.props.logout();
+					this.props.history.push("/");
+					return;
+
+				default:
+					this.setState({ errorMsg: `Unsuspected status code: ${res.status.valueOf()}`});
+					return;
+
+			}
+		}).catch((e) => {
+			this.setState({ errorMsg: "Failed to connect to server: " + e });
+		});
 	};
 
 	render() {

@@ -18,5 +18,6 @@
     <orderEntry type="library" name="@types/body-parser" level="application" />
     <orderEntry type="library" name="@types/passport" level="application" />
     <orderEntry type="library" name="@types/passport-local" level="application" />
+    <orderEntry type="library" name="@types/redux-promise-middleware" level="application" />
   </component>
 </module>

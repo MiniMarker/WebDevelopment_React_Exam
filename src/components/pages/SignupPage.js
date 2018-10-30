@@ -43,6 +43,7 @@ class SignupPage extends React.Component {
 			this.setState({
 				errorMsg: "Passwords don't match"
 			});
+			return;
 		}
 
 		const url = "/api/signup";
@@ -51,43 +52,47 @@ class SignupPage extends React.Component {
 			password: password
 		};
 
-		let response;
+		await fetch(url, {
+			method: 'post',
+			headers: {
+				"Content-type": "application/json"
+			},
+			body: JSON.stringify(payload)
+		}).then((res, err) => {
 
-		try {
-			response = await fetch(url, {
-				method: 'post',
-				headers: {
-					"Content-type": "application/json"
-				},
-				body: JSON.stringify(payload)
-			});
-		} catch(e) {
+			if(err) {
+				this.setState({errorMsg: `Error on request: ${err}`});
+				return;
+			}
+
+			switch(res.status) {
+				case 400:
+					this.setState({ errorMsg: "Invalid userId/password" });
+					return;
+
+				case 204:
+					this.props.signup(username);
+					this.setState({ errorMsg: null });
+					this.props.history.push("/");
+					return;
+
+				default:
+					this.setState({ errorMsg: `Unsuspected status code: ${res.status.valueOf()}`});
+					return;
+
+			}
+
+		}).catch((e) => {
 			this.setState({ errorMsg: "Failed to connect to server: " + e });
-			return;
-		}
-
-		if (response.status === 400) {
-			this.setState({ errorMsg: "Invalid userId/password" });
-			return;
-		}
-
-		if (response.status !== 204) {
-			this.setState({
-				errorMsg:
-					"Error when connecting to server: status code " + response.status
-			});
-			return;
-		}
-
-		this.props.signup(username);
-		this.setState({ errorMsg: null });
-		this.props.history.push("/");
-
+		});
 	};
 
 	render() {
 		return (
 			<div className={"container"}>
+
+				{this.state.errorMsg && <p>{this.state.errorMsg}</p>}
+
 				<form className={"auth_form"} onSubmit={this.handleSignup}>
 					<input
 						type={"text"}

@@ -34,44 +34,53 @@ export class LoginPage extends React.Component {
 		const url = "/api/login";
 		const payload = {username: username, password: password};
 
-		let response;
+		await fetch(url, {
+			method: "post",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(payload)
+		}).then((res, err) => {
 
-		try {
-			response = await fetch(url, {
-				method: "post",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(payload)
-			});
-		} catch (err) {
-			this.setState({ errorMsg: "Failed to connect to server: " + err });
-			return;
-		}
+			if(err) {
+				this.setState({
+					errorMsg: `Error on request: ${err}`
+				});
+				return;
+			}
 
-		if (response.status === 401) {
-			this.setState({ errorMsg: "Invalid userId/password" });
-			return;
-		}
+			switch(res.status) {
 
-		if (response.status !== 204) {
-			this.setState({
-				errorMsg:
-					"Error when connecting to server: status code " + response.status
-			});
-			return;
-		}
+				case 401:
+					this.setState({ errorMsg: "Invalid userId/password" });
+					return;
 
-		this.props.login(username);
-		this.setState({ errorMsg: null });
-		this.props.history.push("/");
+				case 204:
+					this.props.login(username);
+					this.setState({ errorMsg: null });
+					this.props.history.push("/");
+					return;
 
+				default:
+					this.setState({
+						errorMsg: `Unsuspected status code: ${res.status.valueOf()}`
+					});
+					return;
+			}
+
+		}).catch((e) => {
+			this.setState({ errorMsg: "Failed to connect to server: " + e });
+
+		});
 	};
 
 
 	render() {
 		return (
 			<div className={"container"}>
+
+				{this.state.errorMsg && <p>{this.state.errorMsg}</p>}
+
 				<form className={"auth_form"} onSubmit={this.handleLogin}>
 					<input
 						type={"text"}
