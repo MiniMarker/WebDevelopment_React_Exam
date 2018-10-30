@@ -1,5 +1,6 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import { sessionService } from 'redux-react-session';
 
 import Header from "../components/Header";
 import HomePage from '../components/pages/HomePage'

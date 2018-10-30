@@ -29,6 +29,13 @@ router.post('/api/signup', function(req, res) {
 	}
 
 	passport.authenticate('local')(req, res, () => {
+
+		console.log(req.session);
+
+		console.log("Going to set isLoggedIn. Currently: " + req.session.isLoggedIn);
+		req.session.isLoggedIn = true;
+		console.log("Set isLoggedIn. Currently: " + req.session.isLoggedIn);
+
 		req.session.save((err) => {
 			if (err) {
 				return next(err);

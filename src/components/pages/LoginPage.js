@@ -14,15 +14,9 @@ export class LoginPage extends React.Component {
 		};
 	};
 
-	onUsernameChange = (event) => {
+	onInputChange = (event) => {
 		this.setState({
-			username: event.target.value
-		})
-	};
-
-	onPasswordChange = (event) => {
-		this.setState({
-			password: event.target.value
+			[event.target.name]: event.target.value
 		})
 	};
 
@@ -83,13 +77,15 @@ export class LoginPage extends React.Component {
 
 				<form className={"auth_form"} onSubmit={this.handleLogin}>
 					<input
+						name={"username"}
 						type={"text"}
-						onChange={this.onUsernameChange}
+						onChange={this.onInputChange}
 						placeholder={"Username"}
 					/>
 					<input
+						name={"password"}
 						type={"text"}
-						onChange={this.onPasswordChange}
+						onChange={this.onInputChange}
 						placeholder={"Password"}
 					/>
 					<button>Login</button>
