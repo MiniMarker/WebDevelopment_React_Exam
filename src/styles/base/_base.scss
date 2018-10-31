@@ -7,23 +7,3 @@ body {
 	justify-content: center;
 }
 
-.auth_form {
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-
-	input {
-		padding: 10px;
-		margin: 10px;
-		text-align: center;
-	}
-
-	button {
-		padding: 10px;
-		margin: 10px;
-		background-color: #7f7f7f;
-		border: #555555;
-		color: whitesmoke;
-	}
-}
-

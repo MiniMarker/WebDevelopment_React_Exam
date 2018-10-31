@@ -9,25 +9,25 @@ class ProfilePage extends React.Component {
 
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
+
 			switch(res.status) {
 				case 200:
+
 					res.json()
 						.then((parsedBody) => {
-							let jsonBody = parsedBody;
-
 							this.props.login(parsedBody.username);
-
-							console.log(jsonBody);
 						});
+
 					break;
 				case 401:
-					console.log("User not logged in", res.status);
+
+					this.props.history.push("/login");
+
 					break;
 				default:
 					console.log("ERROR: unexpected statuscode!", res.status);
-
 			}
-		})
+		});
 	}
 
 	render() {

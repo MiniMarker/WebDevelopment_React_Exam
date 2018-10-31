@@ -13,6 +13,9 @@
 .header__links {
 	display: flex;
 	justify-content: space-between;
+	max-width: 60%;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .header__link-active {

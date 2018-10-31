@@ -27,6 +27,13 @@ class SignupPage extends React.Component {
 
 		const {username, password, confirmPassword} = this.state;
 
+		if(username.trim().length === 0 || password.trim().length === 0 || confirmPassword.trim().length === 0) {
+			this.setState({
+				errorMsg: "Please enter values in all fields"
+			});
+			return;
+		}
+
 		if(confirmPassword !== password) {
 			this.setState({
 				errorMsg: "Passwords don't match"
@@ -79,9 +86,14 @@ class SignupPage extends React.Component {
 		return (
 			<div className={"container"}>
 
-				{this.state.errorMsg && <p>{this.state.errorMsg}</p>}
-
 				<form className={"auth_form"} onSubmit={this.handleSignup}>
+
+					{this.state.errorMsg &&
+						<div className={"errorMsg"}>
+							<p className={"errorMsg__text"}>{this.state.errorMsg}</p>
+						</div>
+					}
+
 					<input
 						name={"username"}
 						type={"text"}

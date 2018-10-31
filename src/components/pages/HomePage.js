@@ -15,15 +15,11 @@ export class HomePage extends React.Component {
 				case 200:
 					res.json()
 						.then((parsedBody) => {
-							let jsonBody = parsedBody;
-
 							this.props.login(parsedBody.username);
-
-							console.log(jsonBody);
 						});
+
 					break;
 				case 401:
-					console.log("User not logged in", res.status);
 					break;
 				default:
 					console.log("ERROR: unexpected statuscode!", res.status);
