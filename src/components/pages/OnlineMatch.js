@@ -19,9 +19,7 @@ class OnlineMatch extends React.Component {
 						.then((parsedBody) => {
 							this.props.login(parsedBody.username);
 
-
 							this.socket = openSocket(window.location.origin)
-
 
 						});
 
@@ -37,15 +35,17 @@ class OnlineMatch extends React.Component {
 		});
 	}
 
-	renderAuthenticatedUser() {
+	static renderAuthenticatedUser() {
 		return (
 			<div>
+				<h3>Wait for people to join!</h3>
 
+				<img src={"images/loader.gif"}/>
 			</div>
 		);
 	}
 
-	renderGuest() {
+	static renderGuest() {
 		return (
 			<h3>Why are you even seeing this?! you should've been redirected to login by now........</h3>
 		);
@@ -55,8 +55,8 @@ class OnlineMatch extends React.Component {
 		return (
 			<div className={"container"}>
 				{this.props.auth.username
-					? this.renderAuthenticatedUser()
-					: this.renderGuest()
+					? OnlineMatch.renderAuthenticatedUser()
+					: OnlineMatch.renderGuest()
 				}
 			</div>
 		);

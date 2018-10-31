@@ -1,5 +1,4 @@
-
-
+const uuid = require('uuid');
 
 let games = new Map();
 
@@ -8,12 +7,63 @@ let games = new Map();
 
 const createGame = (name) => {
 
+	const game = {
+		id: uuid(),
+		name: name,
+		players: []
+	};
+
+	games.set(name, game);
+	return game;
+};
+
+const getGameByName = (name) => {
+	games.forEach((game) => {
+
+		if(game.name === name) {
+			return game;
+		} else {
+			return null
+		}
+
+	})
 };
 
 const getGame = (id) => {
+
 	return games.get(id);
 };
 
+const deleteGame = (id) => {
+
+	games.delete(id)
+};
+
+const updateGame = (id, updatedValues) => {
+
+	if(getGame(id) === null) {
+		return null;
+	}
+
+	if(updatedValues.id !== undefined ||
+		updatedValues.name === undefined) {
+		return null;
+	}
+
+	let oldGame = getGame(id);
+
+	oldGame.name = updatedValues.name;
+};
+
+const addPlayerToGame = (game, user) => {
+
+	if(!getGame(game.id)) {
+		return false;
+	}
+
+	game.players.push(user);
+	return true;
+};
 
 
 /*
