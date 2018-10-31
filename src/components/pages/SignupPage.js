@@ -15,21 +15,9 @@ class SignupPage extends React.Component {
 		};
 	};
 
-	onUsernameChange = (event) => {
+	onInputChange = (event) => {
 		this.setState({
-			username: event.target.value
-		})
-	};
-
-	onPasswordChange = (event) => {
-		this.setState({
-			password: event.target.value
-		})
-	};
-
-	onConfirmPasswordChange = (event) => {
-		this.setState({
-			confirmPassword: event.target.value
+			[event.target.name]: event.target.value
 		})
 	};
 
@@ -39,10 +27,18 @@ class SignupPage extends React.Component {
 
 		const {username, password, confirmPassword} = this.state;
 
+		if(username.trim().length === 0 || password.trim().length === 0 || confirmPassword.trim().length === 0) {
+			this.setState({
+				errorMsg: "Please enter values in all fields"
+			});
+			return;
+		}
+
 		if(confirmPassword !== password) {
 			this.setState({
 				errorMsg: "Passwords don't match"
 			});
+			return;
 		}
 
 		const url = "/api/signup";
@@ -51,58 +47,70 @@ class SignupPage extends React.Component {
 			password: password
 		};
 
-		let response;
+		await fetch(url, {
+			method: 'post',
+			headers: {
+				"Content-type": "application/json"
+			},
+			body: JSON.stringify(payload)
+		}).then((res, err) => {
 
-		try {
-			response = await fetch(url, {
-				method: 'post',
-				headers: {
-					"Content-type": "application/json"
-				},
-				body: JSON.stringify(payload)
-			});
-		} catch(e) {
+			if(err) {
+				this.setState({errorMsg: `Error on request: ${err}`});
+				return;
+			}
+
+			switch(res.status) {
+				case 400:
+					this.setState({ errorMsg: "Invalid userId/password" });
+					return;
+
+				case 200:
+					//this.props.signup(username);
+					this.setState({ errorMsg: null });
+					this.props.history.push("/");
+					return;
+
+				default:
+					this.setState({ errorMsg: `Unsuspected status code: ${res.status.valueOf()}`});
+					return;
+
+			}
+
+		}).catch((e) => {
 			this.setState({ errorMsg: "Failed to connect to server: " + e });
-			return;
-		}
-
-		if (response.status === 400) {
-			this.setState({ errorMsg: "Invalid userId/password" });
-			return;
-		}
-
-		if (response.status !== 204) {
-			this.setState({
-				errorMsg:
-					"Error when connecting to server: status code " + response.status
-			});
-			return;
-		}
-
-		this.props.signup(username);
-		this.setState({ errorMsg: null });
-		this.props.history.push("/");
-
+		});
 	};
 
 	render() {
 		return (
 			<div className={"container"}>
+
 				<form className={"auth_form"} onSubmit={this.handleSignup}>
+
+					{this.state.errorMsg &&
+						<div className={"errorMsg"}>
+							<p className={"errorMsg__text"}>{this.state.errorMsg}</p>
+						</div>
+					}
+
 					<input
+						name={"username"}
 						type={"text"}
-						onChange={this.onUsernameChange}
+						onChange={this.onInputChange}
 						placeholder={"Username"}
 					/>
 					<input
+						name={"password"}
 						type={"text"}
-						onChange={this.onPasswordChange}
+						onChange={this.onInputChange}
 						placeholder={"Password"}
 					/>
 					<input
+						name={"confirmPassword"}
 						type={"text"}
-						onChange={this.onConfirmPasswordChange}
-						placeholder={"ConfirmPassword"}
+						onChange={this.onInputChange}
+						placeholder={"Confirm password"}
 					/>
 					<button>Sign up</button>
 				</form>

@@ -1,0 +1,46 @@
+.auth_form {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+
+	input {
+		padding: 10px;
+		margin: 10px;
+		text-align: center;
+		width: 300px;
+
+	}
+
+	button {
+		padding: 10px;
+		margin: 10px;
+		background-color: #7f7f7f;
+		border: #555555;
+		color: whitesmoke;
+	}
+
+	button:hover {
+		background-color: #666666;
+		cursor: pointer;
+	}
+
+}
+
+.auth_link {
+	text-decoration: none;
+	color: #222222;
+	text-align: center;
+}
+
+.auth_link:hover {
+	text-decoration: underline;
+}
+
+.errorMsg{
+	background-color: rgba(255,0,0,0.6);
+	padding: 0 10px 0 10px;
+}
+
+.errorMsg__text{
+	color: white;
+}

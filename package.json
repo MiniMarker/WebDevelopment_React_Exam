@@ -46,12 +46,14 @@
 		"react-router-dom": "^4.3.1",
 		"redux": "3.7.2",
 		"redux-persist-cookie-storage": "^1.0.0",
+		"redux-react-session": "^2.5.0",
+		"redux-thunk": "^2.3.0",
 		"sass-loader": "6.0.6",
 		"socket.io": "^2.1.1",
 		"socket.io-client": "^2.1.1",
 		"style-loader": "0.18.2",
 		"supertest": "^3.1.0",
-		"uuid": "3.1.0",
+		"uuid": "^3.1.0",
 		"validator": "8.0.0"
 	},
 	"devDependencies": {

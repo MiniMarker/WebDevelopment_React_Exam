@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import {login} from "../../actions/auth";
 
@@ -14,15 +15,9 @@ export class LoginPage extends React.Component {
 		};
 	};
 
-	onUsernameChange = (event) => {
+	onInputChange = (event) => {
 		this.setState({
-			username: event.target.value
-		})
-	};
-
-	onPasswordChange = (event) => {
-		this.setState({
-			password: event.target.value
+			[event.target.name]: event.target.value
 		})
 	};
 
@@ -32,58 +27,67 @@ export class LoginPage extends React.Component {
 
 		const {username, password} = this.state;
 		const url = "/api/login";
-		const payload = {username: username, password: password};
+		const payload = { username: username, password: password };
 
-		let response;
+		await fetch(url, {
+			method: "post",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(payload)
+		}).then((res, err) => {
 
-		try {
-			response = await fetch(url, {
-				method: "post",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(payload)
-			});
-		} catch (err) {
-			this.setState({ errorMsg: "Failed to connect to server: " + err });
-			return;
-		}
+			if(err) {
+				this.setState({ errorMsg: `Error on request: ${err}` });
+				return;
+			}
 
-		if (response.status === 401) {
-			this.setState({ errorMsg: "Invalid userId/password" });
-			return;
-		}
+			switch(res.status) {
 
-		if (response.status !== 204) {
-			this.setState({
-				errorMsg:
-					"Error when connecting to server: status code " + response.status
-			});
-			return;
-		}
+				case 401:
+					this.setState({ errorMsg: "Invalid userId/password" });
+					return;
 
-		this.props.login(username);
-		this.setState({ errorMsg: null });
-		this.props.history.push("/");
+				case 204:
+					this.setState({ errorMsg: null });
+					this.props.history.push("/");
+					return;
 
+				default:
+					this.setState({ errorMsg: `Unsuspected status code: ${res.status.valueOf()}` });
+					return;
+			}
+
+		}).catch((e) => {
+			this.setState({ errorMsg: "Failed to connect to server: " + e });
+
+		});
 	};
 
 
 	render() {
 		return (
 			<div className={"container"}>
+
 				<form className={"auth_form"} onSubmit={this.handleLogin}>
+
+					{this.state.errorMsg &&
+						<div className={"errorMsg"}>
+							<p className={"errorMsg__text"}>{this.state.errorMsg}</p>
+						</div>}
+
 					<input
+						name={"username"}
 						type={"text"}
-						onChange={this.onUsernameChange}
+						onChange={this.onInputChange}
 						placeholder={"Username"}
 					/>
 					<input
+						name={"password"}
 						type={"text"}
-						onChange={this.onPasswordChange}
+						onChange={this.onInputChange}
 						placeholder={"Password"}
 					/>
 					<button>Login</button>
+					<Link className={"auth_link"} to={"/signup"}>Sign up here!</Link>
 				</form>
 			</div>
 		);

@@ -1,8 +1,10 @@
-import React from 'react'
-import {connect} from "react-redux";
+import React from "react";
+import openSocket from "socket.io-client";
 import {login} from "../../actions/auth";
+import connect from "react-redux/es/connect/connect";
+import {Link} from "react-router-dom";
 
-class ProfilePage extends React.Component {
+class OnlineMatch extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -16,6 +18,9 @@ class ProfilePage extends React.Component {
 					res.json()
 						.then((parsedBody) => {
 							this.props.login(parsedBody.username);
+
+							this.socket = openSocket(window.location.origin)
+
 						});
 
 					break;
@@ -30,16 +35,29 @@ class ProfilePage extends React.Component {
 		});
 	}
 
+	static renderAuthenticatedUser() {
+		return (
+			<div>
+				<h3>Wait for people to join!</h3>
+
+				<img src={"images/loader.gif"}/>
+			</div>
+		);
+	}
+
+	static renderGuest() {
+		return (
+			<h3>Why are you even seeing this?! you should've been redirected to login by now........</h3>
+		);
+	}
+
 	render() {
 		return (
 			<div className={"container"}>
-				<h1>ProfilePage</h1>
-
 				{this.props.auth.username
-					? <h3>{this.props.auth.username}</h3>
-					: <h3>No logged in user</h3>
+					? OnlineMatch.renderAuthenticatedUser()
+					: OnlineMatch.renderGuest()
 				}
-
 			</div>
 		);
 	}
@@ -58,4 +76,4 @@ const mapDispatchToProp = (dispatch) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProp)(ProfilePage);
+export default connect(mapStateToProps, mapDispatchToProp)(OnlineMatch);

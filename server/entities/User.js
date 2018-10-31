@@ -41,6 +41,6 @@ function createUser(username, password){
 	};
 
 	users.set(username, user);
-	return true;
+	return user;
 }
 module.exports = {getUser, verifyUser, createUser};
