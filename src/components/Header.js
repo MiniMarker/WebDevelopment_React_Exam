@@ -26,6 +26,8 @@ export class Header extends React.Component {
 				case 204:
 					console.log("Logout success");
 
+					//TODO delete cookie in browser
+
 					this.props.logout();
 					this.props.history.push("/");
 					return;

@@ -1,51 +1,53 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from "react-redux";
+import React from "react";
+import openSocket from "socket.io-client";
 import {login} from "../../actions/auth";
+import connect from "react-redux/es/connect/connect";
+import {Link} from "react-router-dom";
 
-
-export class HomePage extends React.Component {
-
+class OnlineMatch extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
+
 			switch(res.status) {
 				case 200:
 
 					res.json()
 						.then((parsedBody) => {
 							this.props.login(parsedBody.username);
+
+
+							this.socket = openSocket(window.location.origin)
+
+
 						});
 
 					break;
 				case 401:
+
+					this.props.history.push("/login");
+
 					break;
 				default:
 					console.log("ERROR: unexpected statuscode!", res.status);
-
 			}
-		})
+		});
 	}
 
 	renderAuthenticatedUser() {
 		return (
-
 			<div>
-				<h3>Hi {this.props.auth.username}!</h3>
 
-				<p>This is a multiplayer Quiz game where you can play against a random component online</p>
-
-				<Link to={"/game"}>Start game!</Link>
 			</div>
 		);
 	}
 
 	renderGuest() {
 		return (
-			<h3>No logged in user</h3>
+			<h3>Why are you even seeing this?! you should've been redirected to login by now........</h3>
 		);
 	}
 
@@ -73,4 +75,5 @@ const mapDispatchToProp = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProp)(HomePage);
+
+export default connect(mapStateToProps, mapDispatchToProp)(OnlineMatch);

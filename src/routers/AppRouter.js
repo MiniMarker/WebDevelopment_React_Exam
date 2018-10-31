@@ -8,6 +8,7 @@ import NotFoundPage from "../components/pages/NotFoundPage";
 import ProfilePage from "../components/pages/ProfilePage";
 import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
+import OnlineMatch from "../components/pages/OnlineMatch";
 
 //TODO make this class based and fetch /api/user component did mount
 
@@ -19,25 +20,30 @@ class AppRouter extends React.Component {
 				<div>
 					<Header/>
 					<Switch>
+
+						{/* General routes */}
 						<Route
 							path="/"
 							component={HomePage}
-							checkAuthStatusFunc={this.checkAuthStatus}
 							exact={true}/>
 
 						<Route
 							path="/profile"
 							component={ProfilePage}/>
-							checkAuthStatusFunc={this.checkAuthStatus}
+
+						{/* Auth routes */}
 						<Route
 							path="/login"
-							component={LoginPage}
-							checkAuthStatusFunc={this.checkAuthStatus}/>
+							component={LoginPage}/>
 
 						<Route
 							path="/signup"
-							component={SignupPage}
-							checkAuthStatusFunc={this.checkAuthStatus}/>
+							component={SignupPage}/>
+
+						{/* Game routes */}
+						<Route
+							path="/game"
+							component={OnlineMatch}/>
 
 						<Route component={NotFoundPage}/>
 					</Switch>
@@ -45,7 +51,6 @@ class AppRouter extends React.Component {
 			</BrowserRouter>
 		);
 	}
-
 }
 
 export default AppRouter;

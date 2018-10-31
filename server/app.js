@@ -44,8 +44,14 @@ app.use(passport.session());
 app.use('/', routes);
 
 //handling 404
+/*
 app.use((req, res) => {
 	res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
+});
+*/
+
+app.all('*', function (req, res) {
+	res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html')) /* <= Where my ng-view is located */
 });
 
 module.exports = app;

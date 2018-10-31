@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-const User = require('./entities/user');
+const User = require('./entities/User');
 
 /*
     The login will apply the Passport filter to check if provided
