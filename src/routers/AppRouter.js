@@ -10,6 +10,7 @@ import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
 import OnlineMatch from "../components/pages/OnlineMatch";
 import {HostGamePage} from "../components/pages/HostGamePage";
+import {JoinGamePage} from "../components/pages/JoinGamePage";
 
 //TODO make this class based and fetch /api/user component did mount
 
@@ -45,6 +46,10 @@ class AppRouter extends React.Component {
 						<Route
 							path="/host"
 							component={HostGamePage}/>
+
+						<Route
+							path="/join"
+							component={JoinGamePage}/>
 
 						<Route
 							path="/game"

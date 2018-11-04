@@ -1,5 +1,6 @@
 import React from 'react';
 import openSocket from "socket.io-client";
+import {createTokenForUser} from "../../../server/config/tokens";
 
 export class HostGamePage extends React.Component {
 
@@ -33,6 +34,8 @@ export class HostGamePage extends React.Component {
 			}
 		});
 	}
+
+
 
 	onInputChange = (event) => {
 		this.setState({

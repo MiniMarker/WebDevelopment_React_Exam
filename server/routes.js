@@ -1,19 +1,27 @@
+//Dependencies
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
+//Local files
+const Token = require("./config/tokens");
 const User = require('./entities/User');
 
-/*
-    The login will apply the Passport filter to check if provided
-    username/password are correct.
-    See "passport.use(new LocalStrategy" in app.js
+/**
+ * Login
+ * Use passport to get session
  */
 router.post('/api/login', passport.authenticate('local'), (req, res) => {
 
 	res.status(204).send();
 });
 
+/**
+ * Signup
+ * 1. Create User in DB
+ * 2. Save session
+ * 3. Log user in
+ */
 router.post('/api/signup', function(req, res) {
 
 	console.log("response entered route");
@@ -41,14 +49,43 @@ router.post('/api/signup', function(req, res) {
 	console.log("after auth");
 });
 
+/**
+ * Logout by using passports integrated logout function
+ */
 router.post('/api/logout', function(req, res) {
 
 	req.logout();
 	res.status(204).send();
 });
 
-/*
-    Provide info on logged in user
+/**
+ * Get a Web-Socket token
+ * 1. Check if user exist
+ * 2. Generate a random token and return it as a JSON object
+ */
+router.post("/wstoken", (req, res) => {
+
+	console.log("entered /wstoken route");
+
+	if(!req.user) {
+		res.status(401).send();
+		return;
+	}
+
+	const generatedToken = Token.createTokenForUser(req.user.username);
+
+	console.log(generatedToken);
+
+	res.status(201).json({wstoken: generatedToken});
+
+});
+
+
+
+/**
+ * Get user object for the registred user from passport
+ * 1. Check if user exist
+ * 2. Return given values back as a JSON
  */
 router.get("/api/user", (req, res) => {
 
