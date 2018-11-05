@@ -20,7 +20,7 @@ class OnlineMatch extends React.Component {
 		if(this.props.auth.username === null) {
 			if(userId === null) {
 				this.setState({errorMsg: "You should log in first"});
-				this.state.history.push("/login");
+				this.props.history.push("/login");
 				return;
 			}
 		}
@@ -48,6 +48,10 @@ class OnlineMatch extends React.Component {
 			this.setState({errorMsg: "Disconnected from Server."});
 		});
 
+		this.socket.on('login', () => {
+			console.log("Logged in");
+		});
+
 		this.doLoginWebSocket().then(
 			console.log("login")
 		);
@@ -55,6 +59,7 @@ class OnlineMatch extends React.Component {
 
 	componentWillUnmount() {
 		this.socket.disconnect();
+		console.log("disconnecting socket");
 	}
 
 	async doLoginWebSocket() {
@@ -66,7 +71,8 @@ class OnlineMatch extends React.Component {
 			.then((data) => {
 					console.log("parsed respsonse", data);
 					this.socket.emit("login", data);
-			})
+					console.log("after socket emit");
+			});
 
 		/*
 		await fetch("/wstoken", {method: "post"})
@@ -108,6 +114,7 @@ class OnlineMatch extends React.Component {
 
 			<img src={"images/loader.gif"}/>
 
+			<br/>
 			<button>Start game!</button>
 
 			<br/><br/>

@@ -1,6 +1,5 @@
 import React from 'react';
-import openSocket from "socket.io-client";
-import {createTokenForUser} from "../../../server/config/tokens";
+import Game from '../../../server/entities/Game';
 
 export class HostGamePage extends React.Component {
 
@@ -45,6 +44,9 @@ export class HostGamePage extends React.Component {
 
 	handleCreateGame = (event) => {
 		event.preventDefault();
+
+		console.log("entered handleJoinGame");
+		Game.createGame(this.state.name);
 
 		this.props.history.push("/game");
 	};

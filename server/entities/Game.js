@@ -13,6 +13,8 @@ const createGame = (name) => {
 		players: []
 	};
 
+	console.log(`Game: ${name} created`);
+
 	games.set(name, game);
 	return game;
 };
@@ -27,6 +29,12 @@ const getGameByName = (name) => {
 		}
 
 	})
+};
+
+const getAllGames = () => {
+
+	return Array.from(games.entries());
+
 };
 
 const getGame = (id) => {
@@ -55,15 +63,20 @@ const updateGame = (id, updatedValues) => {
 	oldGame.name = updatedValues.name;
 };
 
-const addPlayerToGame = (game, user) => {
+const addPlayerToGame = (game, username) => {
 
 	if(!getGame(game.id)) {
+		console.log("Could not find game", game);
 		return false;
 	}
+
+	console.log(`Added ${username} to ${game.name}`);
 
 	game.players.push(user);
 	return true;
 };
+
+module.exports = {createGame, getAllGames, getGame, updateGame, addPlayerToGame, deleteGame, getGameByName};
 
 
 /*

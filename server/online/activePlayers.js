@@ -12,7 +12,9 @@ const userToSocket = new Map();
 function registerSocket(socket, username){
 
 	socketToUser.set(socket.id, username);
+	//console.log("socketToUser", socketToUser);
 	userToSocket.set(username, socket);
+	//console.log("userToSocket", userToSocket);
 }
 
 function removeSocket(socketId){

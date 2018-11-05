@@ -1,6 +1,5 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import { sessionService } from 'redux-react-session';
 
 import Header from "../components/Header";
 import HomePage from '../components/pages/HomePage'
@@ -10,7 +9,7 @@ import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
 import OnlineMatch from "../components/pages/OnlineMatch";
 import {HostGamePage} from "../components/pages/HostGamePage";
-import {JoinGamePage} from "../components/pages/JoinGamePage";
+import JoinGamePage from "../components/pages/JoinGamePage";
 
 //TODO make this class based and fetch /api/user component did mount
 
@@ -54,6 +53,7 @@ class AppRouter extends React.Component {
 						<Route
 							path="/game"
 							component={OnlineMatch}/>
+
 
 						<Route component={NotFoundPage}/>
 					</Switch>

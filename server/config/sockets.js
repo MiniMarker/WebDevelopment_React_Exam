@@ -8,7 +8,7 @@ let io;
 const start = (server) => {
 
 	io = socketIo(server);
-
+	console.log("Start of socket");
 	/**
 	 * On connection
 	 */

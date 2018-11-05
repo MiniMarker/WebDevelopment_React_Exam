@@ -76,7 +76,7 @@ router.post("/wstoken", (req, res) => {
 
 	console.log(generatedToken);
 
-	res.status(201).json({wstoken: generatedToken});
+	res.status(201).send({wstoken: generatedToken});
 
 });
 
