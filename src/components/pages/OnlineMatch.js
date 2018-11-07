@@ -15,6 +15,7 @@ class OnlineMatch extends React.Component {
 		};
 	}
 
+	// ############## LIFECYCLE FUNCTIONS ##############
 	componentDidMount() {
 
 		if(this.props.auth.username === null) {
@@ -25,8 +26,25 @@ class OnlineMatch extends React.Component {
 			}
 		}
 
+		this.setupWsSockets();
+
+		this.doLoginWebSocket().then(
+			console.log("login")
+		);
+	};
+
+	componentWillUnmount() {
+
+		this.socket.disconnect();
+		console.log("disconnecting socket");
+	}
+
+
+	setupWsSockets = () => {
+		// Open the socket
 		this.socket = openSocket(window.location.origin);
 
+		//Subscribe to emits from "update"
 		this.socket.on("update", (dto) => {
 
 			if(dto === null || dto === undefined) {
@@ -44,23 +62,16 @@ class OnlineMatch extends React.Component {
 			console.log(data);
 		});
 
-		this.socket.on('disconnect', () => {
+		//Subscribe to emits from "disconnect"
+		this.socket.on("disconnect", () => {
 			this.setState({errorMsg: "Disconnected from Server."});
 		});
 
-		this.socket.on('login', () => {
+		//Subscribe to emits from "login"
+		this.socket.on("login", () => {
 			console.log("Logged in");
 		});
-
-		this.doLoginWebSocket().then(
-			console.log("login")
-		);
 	};
-
-	componentWillUnmount() {
-		this.socket.disconnect();
-		console.log("disconnecting socket");
-	}
 
 	async doLoginWebSocket() {
 
@@ -106,6 +117,7 @@ class OnlineMatch extends React.Component {
 			*/
 	}
 
+	// ############## RENDER FUNCTIONS ##############
 	renderAuthenticatedUser = () => (
 		<div>
 			<h3>Wait for people to join!</h3>
@@ -115,6 +127,9 @@ class OnlineMatch extends React.Component {
 			<img src={"images/loader.gif"}/>
 
 			<br/>
+
+			{}
+
 			<button>Start game!</button>
 
 			<br/><br/>
@@ -139,6 +154,7 @@ class OnlineMatch extends React.Component {
 	}
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth
@@ -151,6 +167,5 @@ const mapDispatchToProp = (dispatch) => {
 		logout: () => dispatch(logout())
 	}
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProp)(OnlineMatch);

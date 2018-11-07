@@ -5,17 +5,18 @@ let games = new Map();
 
 // CRUD
 
-const createGame = (name) => {
+const createGame = (gameName, hostUser) => {
 
 	const game = {
 		id: uuid(),
-		name: name,
+		name: gameName,
+		host: hostUser,
 		players: []
 	};
 
-	console.log(`Game: ${name} created`);
+	console.log(`Game: ${gameName} created`);
 
-	games.set(name, game);
+	games.set(gameName, game);
 	return game;
 };
 
@@ -78,16 +79,7 @@ const addPlayerToGame = (game, username) => {
 
 module.exports = {createGame, getAllGames, getGame, updateGame, addPlayerToGame, deleteGame, getGameByName};
 
-
 /*
-let Game = {
-	// liste over spillere
-	id: uuid,
-	name: "",
-	players: [username1, username2, username3]
-
-};
-
 // games er en array av game
 let Games = {
 

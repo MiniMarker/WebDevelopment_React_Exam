@@ -1,5 +1,7 @@
 import React from 'react';
 import Game from '../../../server/entities/Game';
+import {login} from "../../actions/auth";
+import connect from "react-redux/es/connect/connect";
 
 export class HostGamePage extends React.Component {
 
@@ -11,6 +13,7 @@ export class HostGamePage extends React.Component {
 		}
 	}
 
+	// ############## LIFECYCLE FUNCTIONS ##############
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
 
@@ -35,7 +38,6 @@ export class HostGamePage extends React.Component {
 	}
 
 
-
 	onInputChange = (event) => {
 		this.setState({
 			[event.target.name]: event.target.value
@@ -45,12 +47,13 @@ export class HostGamePage extends React.Component {
 	handleCreateGame = (event) => {
 		event.preventDefault();
 
-		console.log("entered handleJoinGame");
-		Game.createGame(this.state.name);
+		console.log("entered handleCreateGame");
+		Game.createGame(this.state.name, this.props.auth.username);
 
 		this.props.history.push("/game");
 	};
 
+	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
 			<div className={"container"} onSubmit={this.handleCreateGame}>
@@ -68,3 +71,19 @@ export class HostGamePage extends React.Component {
 		);
 	}
 }
+
+// ############## REDUX FUNCTIONS ##############
+const mapStateToProps = (state) => {
+	return {
+		auth: state.auth
+	};
+};
+
+const mapDispatchToProp = (dispatch) => {
+	return {
+		login: (username) => dispatch(login(username))
+	}
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProp)(HostGamePage);

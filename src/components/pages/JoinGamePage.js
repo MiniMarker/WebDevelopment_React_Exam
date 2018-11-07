@@ -14,6 +14,7 @@ class JoinGamePage extends React.Component {
 		}
 	}
 
+	// ############## LIFECYCLE FUNCTIONS ##############
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
 
@@ -36,10 +37,15 @@ class JoinGamePage extends React.Component {
 			}
 		});
 
-
 		this.getGames();
 
 	}
+
+	onInputChange = (event) => {
+		this.setState({
+			[event.target.name]: event.target.value
+		})
+	};
 
 	getGames = () => {
 
@@ -48,12 +54,6 @@ class JoinGamePage extends React.Component {
 		});
 
 		console.log(this.state.games);
-	};
-
-	onInputChange = (event) => {
-		this.setState({
-			[event.target.name]: event.target.value
-		})
 	};
 
 	handleJoinGame = (event) => {
@@ -65,6 +65,7 @@ class JoinGamePage extends React.Component {
 		this.props.history.push("/game");
 	};
 
+	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
 			<div className={"game_list_container"} onSubmit={this.handleJoinGame}>
@@ -79,7 +80,7 @@ class JoinGamePage extends React.Component {
 	}
 }
 
-
+// ############## REDUX FUNCTIONS ##############
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth

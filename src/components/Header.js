@@ -42,6 +42,7 @@ export class Header extends React.Component {
 		});
 	};
 
+	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
 			<div className={"header"}>
@@ -86,6 +87,7 @@ export class Header extends React.Component {
 
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth

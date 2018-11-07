@@ -82,6 +82,7 @@ class SignupPage extends React.Component {
 		});
 	};
 
+	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
 			<div className={"container"}>
@@ -119,6 +120,7 @@ class SignupPage extends React.Component {
 	}
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapDispatchToProp = (dispatch) => {
 	return {
 		signup: (username) => dispatch(signup(username))

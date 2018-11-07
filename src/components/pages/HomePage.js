@@ -10,6 +10,7 @@ export class HomePage extends React.Component {
 		super(props);
 	}
 
+	// ############## LIFECYCLE FUNCTIONS ##############
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
 			switch(res.status) {
@@ -30,6 +31,7 @@ export class HomePage extends React.Component {
 		})
 	}
 
+	// ############## RENDER FUNCTIONS ##############
 	renderAuthenticatedUser() {
 		return (
 
@@ -62,6 +64,7 @@ export class HomePage extends React.Component {
 	}
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth
