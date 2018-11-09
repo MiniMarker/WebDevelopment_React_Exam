@@ -1,15 +1,16 @@
 import React from 'react';
-import Game from '../../../server/entities/Game';
-import {login} from "../../actions/auth";
+import {Link} from 'react-router-dom';
+import Game from '../../../../server/entities/Game';
+import {login, logout} from "../../../actions/auth";
 import connect from "react-redux/es/connect/connect";
 
-export class HostGamePage extends React.Component {
+class JoinGamePage extends React.Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			name: ""
+			games: []
 		}
 	}
 
@@ -35,8 +36,10 @@ export class HostGamePage extends React.Component {
 					console.log("ERROR: unexpected statuscode!", res.status);
 			}
 		});
-	}
 
+		this.getGames();
+
+	}
 
 	onInputChange = (event) => {
 		this.setState({
@@ -44,11 +47,20 @@ export class HostGamePage extends React.Component {
 		})
 	};
 
-	handleCreateGame = (event) => {
+	getGames = () => {
+
+		this.setState({
+			games: Game.getAllGames()
+		});
+
+		console.log(this.state.games);
+	};
+
+	handleJoinGame = (event) => {
 		event.preventDefault();
 
-		console.log("entered handleCreateGame");
-		Game.createGame(this.state.name, this.props.auth.username);
+		console.log("Entered handleJoinGame");
+		Game.addPlayerToGame("name", this.props.auth.username);
 
 		this.props.history.push("/game");
 	};
@@ -56,17 +68,13 @@ export class HostGamePage extends React.Component {
 	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
-			<div className={"container"} onSubmit={this.handleCreateGame}>
-				<form className={"auth_form"}>
-					<input
-						name={"name"}
-						type={"text"}
-						onChange={this.onInputChange}
-						placeholder={"Game name"}
-					/>
-					<button>Host game</button>
-				</form>
-
+			<div className={"game_list_container"} onSubmit={this.handleJoinGame}>
+					{this.state.games.map((game) => {
+						return <div className={"game_list_item"} key={game[1].id}>
+								<h3>name: {game[0]}</h3>
+								<button>Join</button>
+							</div>
+					})}
 			</div>
 		);
 	}
@@ -81,9 +89,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProp = (dispatch) => {
 	return {
-		login: (username) => dispatch(login(username))
+		login: (username) => dispatch(login(username)),
+		logout: () => dispatch(logout())
 	}
 };
 
-
-export default connect(mapStateToProps, mapDispatchToProp)(HostGamePage);
+export default connect(mapStateToProps, mapDispatchToProp)(JoinGamePage);

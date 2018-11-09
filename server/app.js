@@ -5,7 +5,8 @@ const path = require('path');
 const cors = require('cors');
 
 const passport = require("./passport");
-const routes = require('./routes');
+const authRoutes = require('./routes/authRoutes');
+const matchRoutes = require('./routes/matchRoutes');
 
 const app = express();
 
@@ -41,7 +42,8 @@ app.use(passport.session());
 
 
 //--- Routes -----------
-app.use('/', routes);
+app.use('/api', authRoutes);
+app.use('/api', matchRoutes);
 
 //handling 404
 /*

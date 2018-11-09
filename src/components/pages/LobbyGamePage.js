@@ -1,42 +1,46 @@
-import React from "react";
+import React from 'react';
 import openSocket from 'socket.io-client';
+import {connect} from "react-redux";
 import {login, logout} from "../../actions/auth";
-import connect from "react-redux/es/connect/connect";
-import {Link} from "react-router-dom";
 
-class OnlineMatch extends React.Component {
+class LobbyGamePage extends React.Component {
+
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			matchId: null,
-			opponentId: null,
+			opponentIds: [],
 			errorMsg: null
 		};
 	}
 
 	// ############## LIFECYCLE FUNCTIONS ##############
-	componentDidMount() {
+	componentDidMount = () => {
+		//join or start game
 
-		if(this.props.auth.username === null) {
-			if(userId === null) {
-				this.setState({errorMsg: "You should log in first"});
-				this.props.history.push("/login");
-				return;
-			}
+		/*
+		*  In this component i don't handle page refreshes for keeping frontend login state
+		* */
+
+		const username = this.props.auth.username;
+
+		if(username === null) {
+			this.setState({errorMsg: "You have to login before entering a game"});
+			this.props.history.push("/login");
+			return;
 		}
 
 		this.setupWsSockets();
 
 		this.doLoginWebSocket().then(
-			console.log("login")
+			this.startNewMatch
 		);
+
 	};
 
 	componentWillUnmount() {
-
 		this.socket.disconnect();
-		console.log("disconnecting socket");
 	}
 
 
@@ -44,6 +48,7 @@ class OnlineMatch extends React.Component {
 		// Open the socket
 		this.socket = openSocket(window.location.origin);
 
+		/*
 		//Subscribe to emits from "update"
 		this.socket.on("update", (dto) => {
 
@@ -61,6 +66,7 @@ class OnlineMatch extends React.Component {
 
 			console.log(data);
 		});
+		*/
 
 		//Subscribe to emits from "disconnect"
 		this.socket.on("disconnect", () => {
@@ -68,54 +74,47 @@ class OnlineMatch extends React.Component {
 		});
 
 		//Subscribe to emits from "login"
-		this.socket.on("login", () => {
-			console.log("Logged in");
+		this.socket.on("login", (data) => {
+			this.setState({errorMsg: "Connected to Server."});
 		});
 	};
 
-	async doLoginWebSocket() {
+	 doLoginWebSocket = async () => {
 
-		console.log("entered doLoginWithWebsocket");
+	 	//TODO make this promise based
 
-		let response = await fetch("/wstoken", {method: "post"});
-		let parsedResponse = await response.json()
+		let response = await fetch("/api/wstoken", {method: "post"});
+
+		await response.json()
 			.then((data) => {
-					console.log("parsed respsonse", data);
-					this.socket.emit("login", data);
-					console.log("after socket emit");
+				this.socket.emit("login", data);
+			})
+			.catch((e) => {
+				console.error("Error on parse to JSON", e);
 			});
 
-		/*
-		await fetch("/wstoken", {method: "post"})
+	};
+
+	startNewMatch = async () => {
+		fetch("/api/matches", {method: "post"})
 			.then((res) => {
-				console.log(res.status);
 
-				switch(res.status) {
-
-					case 201:
-
-						//res.json().then(data => console.log(data)).catch(e => console.error(e))
-
-						console.log("Generated Token: ", res);
-						this.socket.emit('login', res);
-
-						return;
-
-					case 401:
-						this.setState({errorMsg: "You should log in first"});
-						this.props.logOut();
-						this.state.history.push("/login");
-						return;
-
-					default:
-						this.setState({errorMsg: "Error when connecting to server: status code " + res.status});
-						break;
+				if(res.status === 401) {
+					this.setState({errorMsg: "You need to log in to join a game"});
+					this.props.logout();
+					this.props.history.push("/login");
+					return;
 				}
-			}).catch((err) => {
-				console.log(err);
+
+				if (res.status !== 201 && res.status !== 204) {
+					this.setState({errorMsg: "Unexpected statuscode " + res.status});
+					return;
+				}
 			})
-			*/
-	}
+			.catch((e) => {
+				this.setState({errorMsg: "Error when connecting to server: status code " + e.status});
+			});
+	};
 
 	// ############## RENDER FUNCTIONS ##############
 	renderAuthenticatedUser = () => (
@@ -168,4 +167,4 @@ const mapDispatchToProp = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProp)(OnlineMatch);
+export default connect(mapStateToProps, mapDispatchToProp)(LobbyGamePage);

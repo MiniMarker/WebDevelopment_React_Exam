@@ -8,20 +8,17 @@ let io;
 const start = (server) => {
 
 	io = socketIo(server);
-	console.log("Start of socket");
 	/**
 	 * On connection
 	 */
 	io.on("connection", (socket) => {
-
-		console.log("Entered connection in sockets");
 
 		/**
 		 * On login emit
 		 */
 		socket.on("login", (data) => {
 
-			console.log("Entered login in sockets");
+			//console.log(`data sent >>`, data);
 
 			if(data === null || data === undefined) {
 				socket.emit("update", {
@@ -39,7 +36,7 @@ const start = (server) => {
 			}
 
 			const username = Token.consumeToken(generatedToken);
-			console.log("Token consumed!");
+			//console.log(`Token ${generatedToken} for ${username} consumed`);
 
 			if(username === null || username === undefined) {
 				socket.emit("update", {
@@ -49,23 +46,22 @@ const start = (server) => {
 
 			// if token is valid and all checks pass, connect the socket to the player
 			ActivePlayers.registerSocket(socket, username);
-			console.log(`${username} connected`);
+			console.log(`${username} >> connected`);
 		});
-
 
 		/**
 		 * On disconnection
 		 */
-		io.on("disconnect", () => {
-			const username = ActivePlayers.getUser(socket);
+		socket.on("disconnect", () => {
 
-			ActivePlayers.registerSocket(socket.id);
+			let username = ActivePlayers.getUser(socket.id);
+			console.log(`${username} has disconnected`);
 
+			ActivePlayers.removeSocket(socket.id);
 			//OngoingMatches.forfeit(userId);
 
-			console.log(`${username} has disconnected the game`);
-
 		});
+
 	});
 };
 

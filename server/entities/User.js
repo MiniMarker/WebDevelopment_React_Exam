@@ -28,8 +28,6 @@ function verifyUser(username, password){
 
 function createUser(username, password){
 
-	console.log("response entered create user");
-
 	if(getUser(username) !== undefined ){
 		console.log("User already exist");
 		return false;

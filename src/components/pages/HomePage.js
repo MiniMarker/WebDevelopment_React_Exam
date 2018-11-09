@@ -40,8 +40,13 @@ export class HomePage extends React.Component {
 
 				<p>This is a multiplayer Quiz game where you can play against a random component online</p>
 
-				<Link to={"/host"}>Host a game</Link>
-				<Link to={"/join"}>Join a game</Link>
+
+				{/*
+				<Link to={"/host"}>Host a game</Link> <br/>
+				<Link to={"/join"}>Join a game</Link> <br/>
+				*/}
+
+				<Link to={"/lobbygame"}>Lobby game</Link> <br/>
 			</div>
 		);
 	}

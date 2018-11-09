@@ -7,11 +7,10 @@ import NotFoundPage from "../components/pages/NotFoundPage";
 import ProfilePage from "../components/pages/ProfilePage";
 import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
-import OnlineMatch from "../components/pages/OnlineMatch";
-import HostGamePage from "../components/pages/HostGamePage";
-import JoinGamePage from "../components/pages/JoinGamePage";
-
-//TODO make this class based and fetch /api/user component did mount
+import OnlineMatch from "../components/pages/Rooms/OnlineMatch";
+import HostGamePage from "../components/pages/Rooms/HostGamePage";
+import JoinGamePage from "../components/pages/Rooms/JoinGamePage";
+import LobbyGamePage from "../components/pages/LobbyGamePage";
 
 class AppRouter extends React.Component {
 
@@ -41,7 +40,16 @@ class AppRouter extends React.Component {
 							path="/signup"
 							component={SignupPage}/>
 
-						{/* Game routes */}
+						{/* Game routes
+
+
+						*/}
+
+						<Route
+							path="/lobbygame"
+							component={LobbyGamePage}/>
+
+
 						<Route
 							path="/host"
 							component={HostGamePage}/>

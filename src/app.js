@@ -2,23 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from "react-redux";
 
-require("babel-core/register");
-require("babel-polyfill");
-
 import AppRouter from './routers/AppRouter';
 import configureStore from "./store/configureStore";
-
 
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import {createDefaultQuizzes} from "../server/entities/DefaultData";
-import {getRandomQuiz} from "../server/entities/Quiz";
+import {getAllQuizzes, getRandomQuiz} from "../server/entities/Quiz";
+
+require("babel-core/register");
+require("babel-polyfill");
 
 const store = configureStore();
 
 createDefaultQuizzes();
 
-console.log(getRandomQuiz());
+console.log(getAllQuizzes());
 
 const jsx = (
 	<Provider store={store}>

@@ -1,16 +1,15 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import Game from '../../../server/entities/Game';
-import {login, logout} from "../../actions/auth";
+import Game from '../../../../server/entities/Game';
+import {login} from "../../../actions/auth";
 import connect from "react-redux/es/connect/connect";
 
-class JoinGamePage extends React.Component {
+export class HostGamePage extends React.Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			games: []
+			name: ""
 		}
 	}
 
@@ -36,10 +35,8 @@ class JoinGamePage extends React.Component {
 					console.log("ERROR: unexpected statuscode!", res.status);
 			}
 		});
-
-		this.getGames();
-
 	}
+
 
 	onInputChange = (event) => {
 		this.setState({
@@ -47,20 +44,11 @@ class JoinGamePage extends React.Component {
 		})
 	};
 
-	getGames = () => {
-
-		this.setState({
-			games: Game.getAllGames()
-		});
-
-		console.log(this.state.games);
-	};
-
-	handleJoinGame = (event) => {
+	handleCreateGame = (event) => {
 		event.preventDefault();
 
-		console.log("Entered handleJoinGame");
-		Game.addPlayerToGame("name", this.props.auth.username);
+		console.log("entered handleCreateGame");
+		Game.createGame(this.state.name, this.props.auth.username);
 
 		this.props.history.push("/game");
 	};
@@ -68,13 +56,17 @@ class JoinGamePage extends React.Component {
 	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
-			<div className={"game_list_container"} onSubmit={this.handleJoinGame}>
-					{this.state.games.map((game) => {
-						return <div className={"game_list_item"} key={game[1].id}>
-								<h3>name: {game[0]}</h3>
-								<button>Join</button>
-							</div>
-					})}
+			<div className={"container"} onSubmit={this.handleCreateGame}>
+				<form className={"auth_form"}>
+					<input
+						name={"name"}
+						type={"text"}
+						onChange={this.onInputChange}
+						placeholder={"Game name"}
+					/>
+					<button>Host game</button>
+				</form>
+
 			</div>
 		);
 	}
@@ -89,9 +81,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProp = (dispatch) => {
 	return {
-		login: (username) => dispatch(login(username)),
-		logout: () => dispatch(logout())
+		login: (username) => dispatch(login(username))
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProp)(JoinGamePage);
+
+export default connect(mapStateToProps, mapDispatchToProp)(HostGamePage);

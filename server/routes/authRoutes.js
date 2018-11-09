@@ -1,17 +1,17 @@
 //Dependencies
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
+const passport = require('../passport');
 
 //Local files
-const Token = require("./config/tokens");
-const User = require('./entities/User');
+const Token = require("../config/tokens");
+const User = require('../entities/User');
 
 /**
  * Login
  * Use passport to get session
  */
-router.post('/api/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', passport.authenticate('local'), (req, res) => {
 
 	res.status(204).send();
 });
@@ -22,12 +22,9 @@ router.post('/api/login', passport.authenticate('local'), (req, res) => {
  * 2. Save session
  * 3. Log user in
  */
-router.post('/api/signup', function(req, res) {
+router.post('/signup', function(req, res) {
 
-	console.log("response entered route");
 	const created = User.createUser(req.body.username, req.body.password);
-
-	console.log("User created?", created);
 
 	if(!created) {
 		console.log("Error creating user");
@@ -45,14 +42,12 @@ router.post('/api/signup', function(req, res) {
 			res.status(200).send();
 		});
 	});
-
-	console.log("after auth");
 });
 
 /**
  * Logout by using passports integrated logout function
  */
-router.post('/api/logout', function(req, res) {
+router.post('/logout', function(req, res) {
 
 	req.logout();
 	res.status(204).send();
@@ -65,8 +60,6 @@ router.post('/api/logout', function(req, res) {
  */
 router.post("/wstoken", (req, res) => {
 
-	console.log("entered /wstoken route");
-
 	if(!req.user) {
 		res.status(401).send();
 		return;
@@ -74,7 +67,7 @@ router.post("/wstoken", (req, res) => {
 
 	const generatedToken = Token.createTokenForUser(req.user.username);
 
-	console.log(generatedToken);
+	console.log(`Token for ${req.user.username} >> ${generatedToken}`);
 
 	res.status(201).send({wstoken: generatedToken});
 
@@ -87,7 +80,7 @@ router.post("/wstoken", (req, res) => {
  * 1. Check if user exist
  * 2. Return given values back as a JSON
  */
-router.get("/api/user", (req, res) => {
+router.get("/user", (req, res) => {
 
 	/*
 		If a user is logged in by providing the right session cookie,
