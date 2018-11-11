@@ -68,8 +68,10 @@ const start = (server) => {
 			let game = OngoingMatches.startGame(usersInCurrentGame);
 
 			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.gameId));
+
 			io.to(game.gameId).emit("renderGame", ({
-				errorMsg: "Hello all in room! You are about to start a game with id => " + game.gameId
+				matchId: game.gameId,
+				errorMsg: `Let the game begin!`
 			}));
 		});
 

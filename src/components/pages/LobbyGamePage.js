@@ -17,7 +17,7 @@ class LobbyGamePage extends React.Component {
 		console.log("State reset to default values");
 
 		return {
-			matchId: null,
+			game: null,
 			opponentIds: [],
 			errorMsg: null
 		}
@@ -73,7 +73,11 @@ class LobbyGamePage extends React.Component {
 		});
 
 		this.socket.on("renderGame", (data) => {
-			this.setState({errorMsg: data.errorMsg});
+
+			this.setState({
+				game: data.game,
+				errorMsg: data.errorMsg
+			});
 		});
 
 		//Subscribe to emits from "disconnect"
@@ -100,12 +104,6 @@ class LobbyGamePage extends React.Component {
 			});
 	};
 
-	createGame = () => {
-
-
-
-	};
-
 
 	joinGame = () => {
 
@@ -123,7 +121,7 @@ class LobbyGamePage extends React.Component {
 	};
 
 	// ############## RENDER FUNCTIONS ##############
-	renderAuthenticatedUser = () => (
+	renderIdleText = () => (
 		<div>
 			<h3>Wait for people to join!</h3>
 
@@ -134,13 +132,6 @@ class LobbyGamePage extends React.Component {
 			<br/>
 
 			<button onClick={this.startGame}>Start game!</button>
-			<br/><br/>
-
-			{this.state.errorMsg}
-			<br/><br/>
-
-			<Quiz/>
-
 		</div>
 	);
 
@@ -151,8 +142,15 @@ class LobbyGamePage extends React.Component {
 	render() {
 		return (
 			<div className={"container"}>
+
+				{this.state.errorMsg}
+
 				{this.props.auth.username
-					? this.renderAuthenticatedUser()
+					? this.state.game
+						? <Quiz
+							game={this.state.game}
+						/>
+						: this.renderIdleText()
 					: this.renderGuest()
 				}
 			</div>

@@ -24,5 +24,6 @@
     <orderEntry type="library" name="@types/react" level="application" />
     <orderEntry type="library" name="@types/socket.io" level="application" />
     <orderEntry type="library" name="@types/socket.io-client" level="application" />
+    <orderEntry type="library" name="@types/socket.io.users" level="application" />
   </component>
 </module>
