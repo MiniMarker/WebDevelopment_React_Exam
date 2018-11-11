@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {NavLink} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {logout} from "../actions/auth";
 
 export class Header extends React.Component {
@@ -26,8 +26,6 @@ export class Header extends React.Component {
 				case 204:
 					console.log("Logout success");
 
-					//TODO delete cookie in browser
-
 					this.props.logout();
 					this.props.history.push("/");
 					return;
@@ -43,6 +41,32 @@ export class Header extends React.Component {
 	};
 
 	// ############## RENDER FUNCTIONS ##############
+
+	renderAuthenticatedUser() {
+		return (
+			<button onClick={this.handleLogout}>Log out</button>
+		);
+	}
+
+	renderGuest() {
+		return (
+			<div className={"header__auth-links"}>
+				<NavLink
+					className={"header__link header__link-auth"}
+					to={"/login"}
+					activeClassName={"header__link-active"}
+				>Login</NavLink>
+
+				<NavLink
+					className={"header__link"}
+					to={"/signup"}
+					activeClassName={"header__link-active"}
+				>Signup</NavLink>
+			</div>
+		);
+	}
+
+
 	render() {
 		return (
 			<div className={"header"}>
@@ -63,23 +87,9 @@ export class Header extends React.Component {
 						activeClassName={"header__link-active"}
 						exact={true}
 					>Profile</NavLink>
-					{
-						!this.props.auth.username
-							? <div className={"header__auth-links"}>
-								<NavLink
-									className={"header__link header__link-auth"}
-									to={"/login"}
-									activeClassName={"header__link-active"}
-								>Login</NavLink>
-
-								<NavLink
-									className={"header__link"}
-									to={"/signup"}
-									activeClassName={"header__link-active"}
-								>Signup</NavLink>
-							</div>
-							: <button onClick={this.handleLogout}>Log out</button>
-					}
+					{this.props.auth.username
+						? this.renderAuthenticatedUser()
+						: this.renderGuest()}
 				</div>
 			</div>
 		);

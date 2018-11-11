@@ -1,5 +1,5 @@
 import React from 'react';
-import Game from '../../../../server/entities/Game';
+import gameRepository from '../../../../server/db/gameRepository';
 import {login} from "../../../actions/auth";
 import connect from "react-redux/es/connect/connect";
 
@@ -48,7 +48,7 @@ export class HostGamePage extends React.Component {
 		event.preventDefault();
 
 		console.log("entered handleCreateGame");
-		Game.createGame(this.state.name, this.props.auth.username);
+		gameRepository.createGame(this.state.name, this.props.auth.username);
 
 		this.props.history.push("/game");
 	};

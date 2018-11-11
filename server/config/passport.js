@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('./entities/User');
+const UserRepository = require('../db/userRepository');
 
 passport.use(new LocalStrategy({
 
@@ -9,7 +9,7 @@ passport.use(new LocalStrategy({
 
 	}, function (username, password, done) {
 
-		const ok = User.verifyUser(username, password);
+		const ok = UserRepository.verifyUser(username, password);
 
 		if (!ok) {
 			return done(null, false, {
@@ -17,7 +17,7 @@ passport.use(new LocalStrategy({
 			});
 		}
 
-		const user = User.getUser(username);
+		const user = UserRepository.getUser(username);
 
 		return done(null, user);
 	}
@@ -29,7 +29,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (username, done) {
 
-	const user = User.getUser(username);
+	const user = UserRepository.getUser(username);
 
 	if (user !== undefined) {
 		done(null, user);

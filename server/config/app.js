@@ -5,8 +5,8 @@ const path = require('path');
 const cors = require('cors');
 
 const passport = require("./passport");
-const authRoutes = require('./routes/authRoutes');
-const matchRoutes = require('./routes/matchRoutes');
+const authRoutes = require('../routes/authRoutes');
+const matchRoutes = require('../routes/matchRoutes');
 
 const app = express();
 

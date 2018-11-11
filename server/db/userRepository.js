@@ -6,6 +6,10 @@
     but rather hashed with secure algorithms like BCrypt.
  */
 
+//TODO use Map of entity object
+
+//import {User} from "../entities/User";
+//const users = new Map(Object.entries(User));
 const users = new Map();
 
 

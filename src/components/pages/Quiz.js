@@ -23,15 +23,26 @@ export class Quiz extends React.Component {
 	answerQuestion = (answerIndex) => {
 
 		this.setState((prevState) => {
-
 			const copy = prevState.game.copy();
 
 			return {
 				game: copy
 			}
-
 		});
+	};
 
+	render() {
+		return (
+			<div>
+				<h3>GAME!!!</h3>
+
+				<div>Answer 1</div>
+				<div>Answer 2</div>
+				<div>Answer 3</div>
+				<div>Answer 4</div>
+
+			</div>
+		);
 	}
 
 

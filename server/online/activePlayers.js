@@ -1,8 +1,7 @@
-
 /*
-    This code is copy/pasted from this file with minor changes:
-    https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/src/server/online/active_players.js
- */
+* This code is taken from Andrea Arcuri's course code for this course
+* https://github.com/arcuri82/pg6300/blob/master/les11/connect4-v2/src/server/online/active_players.js
+* */
 
 const socketToUser = new Map();
 const userToSocket = new Map();

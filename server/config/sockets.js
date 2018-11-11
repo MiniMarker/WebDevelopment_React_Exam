@@ -1,7 +1,8 @@
 const socketIo = require("socket.io");
 const Token = require("./tokens");
+const PlayerQueue = require('../online/playerQueue');
+const OngoingMatches = require('../online/ongoingMatches');
 const ActivePlayers = require('../online/activePlayers');
-//const OngoingMatches = require('../online/ongoing_matches');
 
 let io;
 
@@ -17,8 +18,6 @@ const start = (server) => {
 		 * On login emit
 		 */
 		socket.on("login", (data) => {
-
-			//console.log(`data sent >>`, data);
 
 			if(data === null || data === undefined) {
 				socket.emit("update", {
@@ -46,7 +45,32 @@ const start = (server) => {
 
 			// if token is valid and all checks pass, connect the socket to the player
 			ActivePlayers.registerSocket(socket, username);
-			console.log(`${username} >> connected`);
+		});
+
+		socket.on("joinGame", (data) => {
+
+			//check if player is already in the queue
+			if(PlayerQueue.hasUser(data.username)) {
+				console.log(`${data.username} is already in the queue`);
+				return;
+			}
+
+			//TODO implement this after game logic is finished
+			//OngoingMatches.forfeit(req.user.id);
+
+			PlayerQueue.addUser(data.username);
+
+		});
+
+		socket.on("startGame", () => {
+
+			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
+			let game = OngoingMatches.startGame(usersInCurrentGame);
+
+			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.gameId));
+			io.to(game.gameId).emit("renderGame", ({
+				errorMsg: "Hello all in room! You are about to start a game with id => " + game.gameId
+			}));
 		});
 
 		/**

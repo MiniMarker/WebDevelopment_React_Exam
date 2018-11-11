@@ -1,5 +1,5 @@
 /*
-let Game = {
+let gameRepository = {
 	// liste over spillere
 	id: uuid,
 	name: "",
@@ -10,6 +10,7 @@ let Game = {
 
 const uuid = require('uuid');
 
+//TODO use Map of entity object
 let quizzes = new Map();
 
 const createQuiz = (question, ans1, ans2, ans3, ans4, correctAns) => {

@@ -1,11 +1,11 @@
 //Dependencies
 const express = require('express');
 const router = express.Router();
-const passport = require('../passport');
+const passport = require('../config/passport');
 
 //Local files
 const Token = require("../config/tokens");
-const User = require('../entities/User');
+const User = require('../db/userRepository');
 
 /**
  * Login

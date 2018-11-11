@@ -11,14 +11,14 @@ class QuizState {
 		}
 	}
 
-	getGameDto = () => {
+	getGameDto() {
 		return {
 			counter: this.counter,
 			result: this.result
 		}
 	};
 
-	resetGame = () => {
+	resetGame() {
 
 	};
 }

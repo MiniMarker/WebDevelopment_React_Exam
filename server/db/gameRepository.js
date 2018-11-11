@@ -1,5 +1,6 @@
 const uuid = require('uuid');
 
+//TODO use Map of entity object
 let games = new Map();
 
 
@@ -15,6 +16,8 @@ const createGame = (gameName, hostUser) => {
 	};
 
 	console.log(`Game: ${gameName} created`);
+
+	game.players.push(hostUser);
 
 	games.set(gameName, game);
 	return game;
@@ -32,9 +35,19 @@ const getGameByName = (name) => {
 	})
 };
 
+const getAllPlayersInGame = (gameId) => {
+
+	if(games.get(gameId) === undefined || games.get(gameId) === null) {
+		return null;
+	}
+
+	return games.get(gameId).players
+
+};
+
 const getAllGames = () => {
 
-	return Array.from(games.entries());
+	return Array.from(games);
 
 };
 
@@ -78,16 +91,3 @@ const addPlayerToGame = (game, username) => {
 };
 
 module.exports = {createGame, getAllGames, getGame, updateGame, addPlayerToGame, deleteGame, getGameByName};
-
-/*
-// games er en array av game
-let Games = {
-
-	//liste over Game som venter på spillere
-	pendingGames: [Game, Game, Game],
-
-	//liste over Game som er i gang
-	ongoingGames: [Game, Game]
-
-};
-*/

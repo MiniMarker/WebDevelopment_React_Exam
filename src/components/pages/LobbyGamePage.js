@@ -2,18 +2,26 @@ import React from 'react';
 import openSocket from 'socket.io-client';
 import {connect} from "react-redux";
 import {login, logout} from "../../actions/auth";
+import {Quiz} from "./Quiz";
 
 class LobbyGamePage extends React.Component {
 
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		this.state = this.setDefaultState();
+	}
+
+	setDefaultState = () => {
+
+		console.log("State reset to default values");
+
+		return {
 			matchId: null,
 			opponentIds: [],
 			errorMsg: null
-		};
-	}
+		}
+	};
 
 	// ############## LIFECYCLE FUNCTIONS ##############
 	componentDidMount = () => {
@@ -34,9 +42,8 @@ class LobbyGamePage extends React.Component {
 		this.setupWsSockets();
 
 		this.doLoginWebSocket().then(
-			this.startNewMatch
+			this.joinGame
 		);
-
 	};
 
 	componentWillUnmount() {
@@ -48,7 +55,7 @@ class LobbyGamePage extends React.Component {
 		// Open the socket
 		this.socket = openSocket(window.location.origin);
 
-		/*
+
 		//Subscribe to emits from "update"
 		this.socket.on("update", (dto) => {
 
@@ -62,11 +69,12 @@ class LobbyGamePage extends React.Component {
 				return;
 			}
 
-			const data = dto.data;
-
-			console.log(data);
+			console.log(dto.data);
 		});
-		*/
+
+		this.socket.on("renderGame", (data) => {
+			this.setState({errorMsg: data.errorMsg});
+		});
 
 		//Subscribe to emits from "disconnect"
 		this.socket.on("disconnect", () => {
@@ -79,9 +87,7 @@ class LobbyGamePage extends React.Component {
 		});
 	};
 
-	 doLoginWebSocket = async () => {
-
-	 	//TODO make this promise based
+	doLoginWebSocket = async() => {
 
 		let response = await fetch("/api/wstoken", {method: "post"});
 
@@ -92,28 +98,28 @@ class LobbyGamePage extends React.Component {
 			.catch((e) => {
 				console.error("Error on parse to JSON", e);
 			});
+	};
+
+	createGame = () => {
+
+
 
 	};
 
-	startNewMatch = async () => {
-		fetch("/api/matches", {method: "post"})
-			.then((res) => {
 
-				if(res.status === 401) {
-					this.setState({errorMsg: "You need to log in to join a game"});
-					this.props.logout();
-					this.props.history.push("/login");
-					return;
-				}
+	joinGame = () => {
 
-				if (res.status !== 201 && res.status !== 204) {
-					this.setState({errorMsg: "Unexpected statuscode " + res.status});
-					return;
-				}
-			})
-			.catch((e) => {
-				this.setState({errorMsg: "Error when connecting to server: status code " + e.status});
-			});
+		let data = {
+			username: this.props.auth.username
+		};
+
+		this.socket.emit("joinGame", (data));
+	};
+
+
+	startGame = () => {
+
+		this.socket.emit("startGame");
 	};
 
 	// ############## RENDER FUNCTIONS ##############
@@ -127,13 +133,14 @@ class LobbyGamePage extends React.Component {
 
 			<br/>
 
-			{}
-
-			<button>Start game!</button>
-
+			<button onClick={this.startGame}>Start game!</button>
 			<br/><br/>
 
 			{this.state.errorMsg}
+			<br/><br/>
+
+			<Quiz/>
+
 		</div>
 	);
 

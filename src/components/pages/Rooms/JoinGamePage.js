@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Game from '../../../../server/entities/Game';
+import gameRepository from '../../../../server/db/gameRepository';
 import {login, logout} from "../../../actions/auth";
 import connect from "react-redux/es/connect/connect";
 
@@ -50,7 +50,7 @@ class JoinGamePage extends React.Component {
 	getGames = () => {
 
 		this.setState({
-			games: Game.getAllGames()
+			games: gameRepository.getAllGames()
 		});
 
 		console.log(this.state.games);
@@ -60,7 +60,7 @@ class JoinGamePage extends React.Component {
 		event.preventDefault();
 
 		console.log("Entered handleJoinGame");
-		Game.addPlayerToGame("name", this.props.auth.username);
+		gameRepository.addPlayerToGame("name", this.props.auth.username);
 
 		this.props.history.push("/game");
 	};
