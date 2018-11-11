@@ -18,7 +18,6 @@ export default (state = authDefaultState, action) => {
 				username: action.username
 			};
 
-
 		default:
 			return state;
 

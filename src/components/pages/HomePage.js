@@ -10,6 +10,7 @@ export class HomePage extends React.Component {
 		super(props);
 	}
 
+	// ############## LIFECYCLE FUNCTIONS ##############
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
 			switch(res.status) {
@@ -30,6 +31,7 @@ export class HomePage extends React.Component {
 		})
 	}
 
+	// ############## RENDER FUNCTIONS ##############
 	renderAuthenticatedUser() {
 		return (
 
@@ -38,8 +40,13 @@ export class HomePage extends React.Component {
 
 				<p>This is a multiplayer Quiz game where you can play against a random component online</p>
 
-				<Link to={"/host"}>Host a game</Link>
-				<Link to={"/join"}>Join a game</Link>
+
+				{/*
+				<Link to={"/host"}>Host a game</Link> <br/>
+				<Link to={"/join"}>Join a game</Link> <br/>
+				*/}
+
+				<Link to={"/lobbygame"}>Lobby game</Link> <br/>
 			</div>
 		);
 	}
@@ -62,6 +69,7 @@ export class HomePage extends React.Component {
 	}
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth

@@ -1,6 +1,5 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import { sessionService } from 'redux-react-session';
 
 import Header from "../components/Header";
 import HomePage from '../components/pages/HomePage'
@@ -8,10 +7,10 @@ import NotFoundPage from "../components/pages/NotFoundPage";
 import ProfilePage from "../components/pages/ProfilePage";
 import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
-import OnlineMatch from "../components/pages/OnlineMatch";
-import {HostGamePage} from "../components/pages/HostGamePage";
-
-//TODO make this class based and fetch /api/user component did mount
+import OnlineMatch from "../components/pages/Rooms/OnlineMatch";
+import HostGamePage from "../components/pages/Rooms/HostGamePage";
+import JoinGamePage from "../components/pages/Rooms/JoinGamePage";
+import LobbyGamePage from "../components/pages/LobbyGamePage";
 
 class AppRouter extends React.Component {
 
@@ -41,14 +40,28 @@ class AppRouter extends React.Component {
 							path="/signup"
 							component={SignupPage}/>
 
-						{/* Game routes */}
+						{/* Game routes
+
+
+						*/}
+
+						<Route
+							path="/lobbygame"
+							component={LobbyGamePage}/>
+
+
 						<Route
 							path="/host"
 							component={HostGamePage}/>
 
 						<Route
+							path="/join"
+							component={JoinGamePage}/>
+
+						<Route
 							path="/game"
 							component={OnlineMatch}/>
+
 
 						<Route component={NotFoundPage}/>
 					</Switch>

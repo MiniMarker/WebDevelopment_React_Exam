@@ -62,7 +62,7 @@ export class LoginPage extends React.Component {
 		});
 	};
 
-
+	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
 			<div className={"container"}>
@@ -94,6 +94,7 @@ export class LoginPage extends React.Component {
 	}
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapDispatchToProp = (dispatch) => {
 	return {
 		login: (username) => dispatch(login(username))

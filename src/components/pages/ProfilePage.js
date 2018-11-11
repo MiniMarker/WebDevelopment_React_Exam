@@ -7,6 +7,7 @@ class ProfilePage extends React.Component {
 		super(props);
 	}
 
+	// ############## LIFECYCLE FUNCTIONS ##############
 	async componentDidMount() {
 		await fetch("/api/user").then((res) => {
 
@@ -30,6 +31,7 @@ class ProfilePage extends React.Component {
 		});
 	}
 
+	// ############## RENDER FUNCTIONS ##############
 	render() {
 		return (
 			<div className={"container"}>
@@ -45,6 +47,7 @@ class ProfilePage extends React.Component {
 	}
 }
 
+// ############## REDUX FUNCTIONS ##############
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth
