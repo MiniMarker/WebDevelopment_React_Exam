@@ -144,11 +144,13 @@ class LobbyGamePage extends React.Component {
 			<div className={"container"}>
 
 				{this.state.errorMsg}
+				<br/><br/>
 
 				{this.props.auth.username
 					? this.state.game
 						? <Quiz
 							game={this.state.game}
+							socket={this.socket}
 						/>
 						: this.renderIdleText()
 					: this.renderGuest()

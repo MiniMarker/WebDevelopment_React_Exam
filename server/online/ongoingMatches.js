@@ -10,6 +10,13 @@ const usernameToGame = new Map();
 const gameIdToGame = new Map();
 
 const startGame = (users) => {
+
+	/*
+	if(users.length < 2) {
+		return null;
+	}
+	*/
+
 	const game = new Game(users, deleteGame);
 
 	users.forEach((username) => {

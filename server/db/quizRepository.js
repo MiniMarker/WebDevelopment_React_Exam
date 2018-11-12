@@ -29,7 +29,7 @@ const createQuiz = (question, ans1, ans2, ans3, ans4, correctAns) => {
 };
 
 const getAllQuizzes = () => {
-	return Array.from(quizzes.entries());
+	return Array.from(quizzes);
 };
 
 const getQuiz = (id) => {
@@ -40,7 +40,7 @@ const getRandomQuiz = () => {
 
 	const randomNum = Math.floor(Math.random() * quizzes.size);
 
-	return Array.from(quizzes.entries())[randomNum]
+	return Array.from(quizzes)[randomNum]
 };
 
 

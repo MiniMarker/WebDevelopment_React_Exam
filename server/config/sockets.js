@@ -3,6 +3,8 @@ const Token = require("./tokens");
 const PlayerQueue = require('../online/playerQueue');
 const OngoingMatches = require('../online/ongoingMatches');
 const ActivePlayers = require('../online/activePlayers');
+const quizRepository = require("../db/quizRepository");
+const gameRepository = require("../db/gameRepository");
 
 let io;
 
@@ -65,15 +67,39 @@ const start = (server) => {
 		socket.on("startGame", () => {
 
 			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
-			let game = OngoingMatches.startGame(usersInCurrentGame);
+			// OLD let game = OngoingMatches.startGame(usersInCurrentGame);
+			let game = gameRepository.getRandomGame();
 
-			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.gameId));
+			usersInCurrentGame.forEach((user) => gameRepository.addPlayerToGame(game, user));
 
-			io.to(game.gameId).emit("renderGame", ({
-				matchId: game.gameId,
+
+			/*
+			if(game === null) {
+				socket.emit("update", {
+					errorMsg: "It needs to be more than 2 players in the queue to be able to start a game"
+				});
+
+				return;
+			}
+			*/
+
+			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.id));
+
+			io.to(game.id).emit("renderGame", ({
+				game: game,
 				errorMsg: `Let the game begin!`
 			}));
 		});
+
+		socket.on("getQuestion", (data) => {
+
+			io.to(data.gameId).emit("recieveQuestion", ({
+				questions: quizRepository.getAllQuizzes()
+			}));
+
+		});
+
+
 
 		/**
 		 * On disconnection
