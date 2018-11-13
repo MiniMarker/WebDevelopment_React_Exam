@@ -94,13 +94,18 @@ const start = (server) => {
 
 		socket.on("getQuestion", (game) => {
 
+			let numOfQuestions = 3;
 			let i = 0;
+			emitQuestions(game, i++);
 
 			let interval = setInterval(() => {
 
-				i < 3 ? emitQuestions(game, i++) : clearInterval(interval);
+				i < numOfQuestions
+					? emitQuestions(game, i++)
+					: clearInterval(interval);
 
-			}, 3000);
+			}, 5000);
+
 		});
 
 		//Help method for getQuestion
