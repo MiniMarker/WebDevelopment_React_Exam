@@ -1,0 +1,13 @@
+.question_alt {
+	display: flex;
+	justify-content: center;
+
+	height: 50px;
+	width: 300px;
+	margin-bottom: 20px;
+	border: 2px solid rgb(40,40,40);
+}
+
+.question_alt:hover {
+	cursor: pointer;
+}

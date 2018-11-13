@@ -19,6 +19,7 @@ class LobbyGamePage extends React.Component {
 		return {
 			game: null,
 			opponentIds: [],
+			numberOfPlayers: null,
 			errorMsg: null
 		}
 	};
@@ -80,6 +81,12 @@ class LobbyGamePage extends React.Component {
 			});
 		});
 
+		this.socket.on("updateNumberOfPlayers", (data) => {
+			this.setState({
+				numberOfPlayers: data
+			})
+		});
+
 		//Subscribe to emits from "disconnect"
 		this.socket.on("disconnect", () => {
 			this.setState({errorMsg: "Disconnected from Server."});
@@ -125,7 +132,9 @@ class LobbyGamePage extends React.Component {
 		<div>
 			<h3>Wait for people to join!</h3>
 
-			<h3>x people has joined the game</h3>
+			{this.state.numberOfPlayers
+				? <h3>{this.state.numberOfPlayers} people has joined the game</h3>
+				: <h3>x people has joined the game</h3>}
 
 			<img src={"images/loader.gif"}/>
 

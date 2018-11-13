@@ -47,6 +47,7 @@ const hasUser = (username) => {
  * @returns {Array}
  */
 const getAllUsersInQueue = () => {
+
 	return queue;
 };
 
@@ -80,6 +81,13 @@ const takeMultipleUsers = (numberOfUsers) => {
  * @returns {Array} Array of all users that were taken from the queue
  */
 const takeAllUsersInQueue = () => {
+
+	/*
+	if(queue.length <= 1) {
+		console.log("Queue length <= 1");
+		return null;
+	}
+	*/
 
 	let users = [];
 

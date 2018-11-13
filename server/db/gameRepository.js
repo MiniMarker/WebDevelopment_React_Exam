@@ -5,13 +5,18 @@ let games = new Map();
 
 // CRUD
 
+/*
+*   GAME
+* */
+
 const createGame = (gameName) => {
 
 	const game = {
 		id: uuid(),
 		name: gameName,
 		players: [],
-		questions: []
+		questions: [],
+		playersAnswers: []
 	};
 
 	games.set(gameName, game);
@@ -112,8 +117,13 @@ const getAllQuestions = (game) => {
 	return game.questions;
 };
 
-const getQuestion = (id) => {
-	return games.get(id);
+const getQuestion = (game, index) => {
+
+	if(index > game.questions.length - 1) {
+		return null;
+	}
+
+	return game.questions[index];
 };
 
 const getRandomQuestion = (game) => {
@@ -121,6 +131,26 @@ const getRandomQuestion = (game) => {
 	const randomNum = Math.floor(Math.random() * game.questions.size);
 
 	return game.questions[randomNum]
+};
+
+/*
+*   ANSWERS
+* */
+
+const answerQuestion = (game, username, question, choice)  => {
+
+	let isCorrect;
+
+	isCorrect = question.correctAnsIndex === choice;
+
+	let answer = {
+		username,
+		question,
+		choice,
+		isCorrect
+	};
+
+	game.playersAnswers.push(answer);
 };
 
 module.exports = {

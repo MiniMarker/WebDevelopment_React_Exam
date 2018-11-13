@@ -3,7 +3,6 @@ const Token = require("./tokens");
 const PlayerQueue = require('../online/playerQueue');
 const OngoingMatches = require('../online/ongoingMatches');
 const ActivePlayers = require('../online/activePlayers');
-const quizRepository = require("../db/quizRepository");
 const gameRepository = require("../db/gameRepository");
 
 let io;
@@ -62,27 +61,29 @@ const start = (server) => {
 
 			PlayerQueue.addUser(data.username);
 
+			socket.emit("updateNumberOfPlayers", (PlayerQueue.size()));
+
 		});
 
 		socket.on("startGame", () => {
 
 			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
 			// OLD let game = OngoingMatches.startGame(usersInCurrentGame);
-			let game = gameRepository.getRandomGame();
 
-			usersInCurrentGame.forEach((user) => gameRepository.addPlayerToGame(game, user));
-
+			console.log("User in the game >> ", usersInCurrentGame);
 
 			/*
-			if(game === null) {
+			if(usersInCurrentGame === null) {
 				socket.emit("update", {
-					errorMsg: "It needs to be more than 2 players in the queue to be able to start a game"
+					errorMsg: "It needs to be at least 3 users in the game"
 				});
-
 				return;
 			}
 			*/
 
+			let game = gameRepository.getRandomGame();
+
+			usersInCurrentGame.forEach((user) => gameRepository.addPlayerToGame(game, user));
 			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.id));
 
 			io.to(game.id).emit("renderGame", ({
@@ -91,13 +92,23 @@ const start = (server) => {
 			}));
 		});
 
-		socket.on("getQuestion", (data) => {
+		socket.on("getQuestion", (game) => {
 
-			io.to(data.gameId).emit("recieveQuestion", ({
-				questions: quizRepository.getAllQuizzes()
-			}));
+			let i = 0;
 
+			let interval = setInterval(() => {
+
+				i < 3 ? emitQuestions(game, i++) : clearInterval(interval);
+
+			}, 3000);
 		});
+
+		//Help method for getQuestion
+		const emitQuestions = (game, i) => {
+			io.to(game.id).emit("receiveQuestion", ({
+				question: gameRepository.getQuestion(game, i)
+			}));
+		};
 
 
 
