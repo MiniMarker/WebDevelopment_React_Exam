@@ -10,38 +10,26 @@ let io;
 const start = (server) => {
 
 	io = socketIo(server);
-	/**
-	 * On connection
-	 */
+
 	io.on("connection", (socket) => {
 
-		/**
-		 * On login emit
-		 */
 		socket.on("login", (data) => {
 
 			if(data === null || data === undefined) {
-				socket.emit("update", {
-					errorMsg: "No data provided, plz send data"
-				});
+				socket.emit("update", { errorMsg: "No data provided, plz send data" });
 			}
 
 			// Generate a random token
 			const generatedToken = data.wstoken;
 
 			if(generatedToken === null || generatedToken === undefined) {
-				socket.emit("update", {
-					errorMsg: "Invalid generated token"
-				});
+				socket.emit("update", { errorMsg: "Invalid generated token" });
 			}
 
 			const username = Token.consumeToken(generatedToken);
-			//console.log(`Token ${generatedToken} for ${username} consumed`);
 
 			if(username === null || username === undefined) {
-				socket.emit("update", {
-					errorMsg: "Invalid generated token"
-				});
+				socket.emit("update", { errorMsg: "Invalid generated token" });
 			}
 
 			// if token is valid and all checks pass, connect the socket to the player
@@ -52,7 +40,7 @@ const start = (server) => {
 
 			//check if player is already in the queue
 			if(PlayerQueue.hasUser(data.username)) {
-				console.log(`${data.username} is already in the queue`);
+				socket.emit("update", { errorMsg: "Invalid generated token" });
 				return;
 			}
 
@@ -73,6 +61,7 @@ const start = (server) => {
 			console.log("User in the game >> ", usersInCurrentGame);
 
 			/*
+			//TODO uncomment this to set requirement for min 2 users to start the game
 			if(usersInCurrentGame === null) {
 				socket.emit("update", {
 					errorMsg: "It needs to be at least 3 users in the game"
@@ -84,25 +73,32 @@ const start = (server) => {
 			let game = gameRepository.getRandomGame();
 
 			usersInCurrentGame.forEach((user) => gameRepository.addPlayerToGame(game, user));
+
+			//All players join the socket room
 			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.id));
 
 			io.to(game.id).emit("renderGame", ({
 				game: game,
-				errorMsg: `Let the game begin!`
+				errorMsg: null
 			}));
 		});
 
 		socket.on("getQuestion", (game) => {
 
-			let numOfQuestions = 3;
+			let numOfQuestions = 2;
 			let i = 0;
+
 			emitQuestions(game, i++);
 
 			let interval = setInterval(() => {
 
-				i < numOfQuestions
-					? emitQuestions(game, i++)
-					: clearInterval(interval);
+				if(i < numOfQuestions) {
+					emitQuestions(game, i++)
+				} else {
+					clearInterval(interval);
+
+					io.to(game.id).emit("endGame");
+				}
 
 			}, 5000);
 
@@ -110,24 +106,26 @@ const start = (server) => {
 
 		//Help method for getQuestion
 		const emitQuestions = (game, i) => {
-			io.to(game.id).emit("receiveQuestion", ({
-				question: gameRepository.getQuestion(game, i)
-			}));
+			io.to(game.id).emit("receiveQuestion", { question: gameRepository.getQuestion(game, i) });
 		};
 
+		socket.on("answerQuestion", (data) => {
 
+			//console.log("data.game >> ", data.game);
+			console.log("data.username >> ", data.username);
+			console.log("data.isCorrect >> ", data.isCorrect);
+
+			gameRepository.answerQuestion(data.game, data.username, data.isCorrect);
+
+
+		});
 
 		/**
 		 * On disconnection
 		 */
 		socket.on("disconnect", () => {
-
-			let username = ActivePlayers.getUser(socket.id);
-			console.log(`${username} has disconnected`);
-
 			ActivePlayers.removeSocket(socket.id);
 			//OngoingMatches.forfeit(userId);
-
 		});
 
 	});

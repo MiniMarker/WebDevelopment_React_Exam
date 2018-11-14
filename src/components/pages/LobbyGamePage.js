@@ -160,6 +160,7 @@ class LobbyGamePage extends React.Component {
 						? <Quiz
 							game={this.state.game}
 							socket={this.socket}
+							authUser={this.props.auth.username}
 						/>
 						: this.renderIdleText()
 					: this.renderGuest()

@@ -83,6 +83,7 @@ const takeMultipleUsers = (numberOfUsers) => {
 const takeAllUsersInQueue = () => {
 
 	/*
+	//TODO uncomment this to set requirement for min 2 users to start the game
 	if(queue.length <= 1) {
 		console.log("Queue length <= 1");
 		return null;

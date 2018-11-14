@@ -12,18 +12,18 @@ let games = new Map();
 const createGame = (gameName) => {
 
 	const game = {
-		id: uuid(),
+		id: null,
 		name: gameName,
 		players: [],
 		questions: [],
-		playersAnswers: []
+		playersAnswers: {}
 	};
 
 	games.set(gameName, game);
 	return game;
 };
 
-const getGameByName = (name) => {
+/*const getGameByName = (name) => {
 	games.forEach((game) => {
 
 		if(game.name === name) {
@@ -31,9 +31,8 @@ const getGameByName = (name) => {
 		} else {
 			return null
 		}
-
 	})
-};
+};*/
 
 const getRandomGame = () => {
 	const randomNum = Math.floor(Math.random() * games.size);
@@ -41,12 +40,15 @@ const getRandomGame = () => {
 	let key = Array.from(games.keys())[randomNum];
 	let randomQuiz = games.get(key);
 
+	randomQuiz.id = uuid();
+	randomQuiz.playersAnswers = [];
+
 	//console.log("getRandomGame >> ", randomQuiz);
 
 	return randomQuiz;
 };
 
-const getAllPlayersInGame = (game) => {
+/*const getAllPlayersInGame = (game) => {
 
 	if(games.get(gameId) === undefined || games.get(gameId) === null) {
 		return null;
@@ -54,7 +56,7 @@ const getAllPlayersInGame = (game) => {
 
 	return games.get(gameId).players
 
-};
+};*/
 
 const getAllGames = () => {
 
@@ -94,15 +96,24 @@ const addPlayerToGame = (game, username) => {
 		return false;
 	}
 
+	let userInfo = {
+		username,
+		score: []
+	};
+
+	//game.players.push(userInfo);
 	game.players.push(username);
 	return true;
 };
 
+
+
 // QUESTIONS
 
-const createQuestion = (game, question, ans1, ans2, ans3, ans4, correctAnsIndex) => {
+const createQuestion = (game, id, question, ans1, ans2, ans3, ans4, correctAnsIndex) => {
 
 	const input = {
+		id,
 		question,
 		answers: [
 			ans1, ans2, ans3, ans4
@@ -133,24 +144,42 @@ const getRandomQuestion = (game) => {
 	return game.questions[randomNum]
 };
 
+
+
+
 /*
 *   ANSWERS
 * */
 
-const answerQuestion = (game, username, question, choice)  => {
+const answerQuestion = (game, username, isCorrect)  => {
 
-	let isCorrect;
+	let score, oldValue;
 
-	isCorrect = question.correctAnsIndex === choice;
+	isCorrect ? score = 1 : score = 0;
 
-	let answer = {
-		username,
-		question,
-		choice,
-		isCorrect
+	game.playersAnswers[username] !== undefined
+		? oldValue = game.playersAnswers[username].result
+		: oldValue = 0;
+
+	console.log("oldValue", oldValue);
+
+	game.playersAnswers[username] = {
+		result: oldValue + score
 	};
 
-	game.playersAnswers.push(answer);
+	console.log("print from AnswerQuestion", game.playersAnswers);
+};
+
+const getPlayerAnswers = (game) => {
+
+	game.playersAnswers.forEach((player) => {
+
+		scoreSum = 0;
+
+		let sum = player.forEach((score) => {
+			return sum + score;
+		})
+	})
 };
 
 module.exports = {
@@ -161,9 +190,9 @@ module.exports = {
 	getRandomGame,
 	addPlayerToGame,
 	deleteGame,
-	getGameByName,
 	createQuestion,
 	getAllQuestions,
 	getQuestion,
-	getRandomQuestion
+	getRandomQuestion,
+	answerQuestion
 };
