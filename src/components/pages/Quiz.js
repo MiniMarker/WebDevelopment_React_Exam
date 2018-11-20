@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from 'react-router-dom';
-import Countdown from 'react-countdown-now';
 
 export class Quiz extends React.Component {
 
@@ -23,6 +22,16 @@ export class Quiz extends React.Component {
 	componentDidMount() {
 
 		this.state.socket.on("receiveQuestion", (data) => {
+
+			if(this.state.questionAnswered === false) {
+
+				this.state.socket.emit("answerQuestion", ({
+					gameId: this.state.game.id,
+					username: this.state.authUser,
+					timestamp: 5000
+				}));
+
+			}
 
 			this.setState({
 				question: data.question,
@@ -74,21 +83,10 @@ export class Quiz extends React.Component {
 		}));
 	};
 
-	countdownRenderer = ({seconds}) => {
-		return <span>{seconds}</span>
-	};
-
 	renderQuestions = () => {
 		return (
 			<div>
 				<h2>{this.state.game.name}</h2>
-
-				{/*FIXME make this not rerender on question answer*/}
-				<Countdown
-					className={"countdown"}
-					date={Date.now() + 5000}
-					renderer={this.countdownRenderer}
-				/>
 
 				{this.state.question &&
 					<div>
@@ -112,12 +110,10 @@ export class Quiz extends React.Component {
 		)
 	};
 
-	// TODO Remove the playerlist if not working highscore
 	renderScore = () => {
 		return (
 			<div>
 				<h2>Game is done!</h2>
-
 
 				<table>
 					<thead>
@@ -132,7 +128,7 @@ export class Quiz extends React.Component {
 							return (
 								<tr key={`player_${index}`}>
 									<td>{player.username}</td>
-									<td>{(100 - Math.floor(player.score / 100))}</td>   {/*TODO Update divider number to 250*/}
+									<td>{(100 - Math.floor(player.score / 250))}</td>   {/*TODO Update divider number to 250*/}
 								</tr>
 							)
 						})}

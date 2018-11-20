@@ -10,7 +10,6 @@ let games = new Map();
 const createGame = (gameName) => {
 
 	const game = {
-		id: null,
 		name: gameName,
 		questions: [],
 	};

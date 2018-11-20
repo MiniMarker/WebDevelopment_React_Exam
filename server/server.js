@@ -1,14 +1,10 @@
 const app = require("./config/app");
 const WsHandler = require("./config/sockets");
 const server = require("http").Server(app);
-const gameRepository = require("./db/gameRepository");
 
 //Default data
-const defaultData = require("../server/db/DefaultData");
-
+const defaultData = require("../server/db/DefaultData");w
 defaultData.createDefaultUsers();
-//defaultData.createDefaultQuizzes();
-
 defaultData.createDefaultGames();
 
 //Starting server

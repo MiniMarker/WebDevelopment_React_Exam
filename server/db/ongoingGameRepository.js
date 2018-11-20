@@ -5,14 +5,18 @@ let ongoingGames = new Map();
 
 const startGame = () => {
 
-	let randomGame = gameRepository.getRandomGame();
+	let game = {};
 
-	randomGame.id = uuid();
-	randomGame.players = [];
+	game.id = uuid();
+	game.players = [];
 
-	ongoingGames.set(randomGame.id, randomGame);
+	Object.assign(game, gameRepository.getRandomGame());
 
-	return randomGame;
+	console.log("Created game: ", game);
+
+	ongoingGames.set(game.id, game);
+
+	return game;
 };
 
 const addPlayerToGame = (gameId, username) => {
@@ -33,7 +37,7 @@ const updateTimeScore = (gameId, username, timestamp) => {
 
 	let player = game.players.find(player => player.username === username);
 	player.score += timestamp;
-	//console.log(`player: ${player.username}.score = `, player.score);
+	console.log(`player: ${player.username}.score = `, player.score);
 };
 
 const getOngoingGame = (gameId) => {
@@ -54,11 +58,9 @@ const getPlayersInOngoingGame = (gameId) => {
 
 const endGame = (gameId) => {
 
-	console.log("Entered endGame in DB");
-
 	if(getOngoingGame(gameId) !== undefined) {
 		ongoingGames.delete(gameId);
-		console.log("Game deleted");
+		console.log(`Game with id: ${gameId} DELETED`);
 	}
 
 };
