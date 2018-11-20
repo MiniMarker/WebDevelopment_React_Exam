@@ -60,13 +60,6 @@ router.post("/startgame", (req, res) => {
 		return;
 	}
 
-	//const allUsers = PlayerQueue.getAllUsersInQueue();
-	//console.log(`getAllUsersInQueue >> ${allUsers}`);
-
-	//for(let username in allUsers) {
-	//	console.log(username);
-	//}
-
 	let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
 	console.log(`takeAllUsersInQueue >> ${usersInCurrentGame}`);
 

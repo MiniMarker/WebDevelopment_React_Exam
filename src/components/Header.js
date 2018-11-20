@@ -79,14 +79,8 @@ export class Header extends React.Component {
 						className={"header__link"}
 						activeClassName={"header__link-active"}
 						exact={true}
-					>Dashboard</NavLink>
+					>Home</NavLink>
 
-					<NavLink
-						to={"/profile"}
-						className={"header__link"}
-						activeClassName={"header__link-active"}
-						exact={true}
-					>Profile</NavLink>
 					{this.props.auth.username
 						? this.renderAuthenticatedUser()
 						: this.renderGuest()}

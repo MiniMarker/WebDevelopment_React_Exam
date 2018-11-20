@@ -40,7 +40,7 @@ const start = (server) => {
 
 			//check if player is already in the queue
 			if(PlayerQueue.hasUser(data.username)) {
-				socket.emit("update", { errorMsg: "Invalid generated token" });
+				socket.emit("update", { errorMsg: "User is already in the queue" });
 				return;
 			}
 
@@ -56,7 +56,6 @@ const start = (server) => {
 		socket.on("startGame", () => {
 
 			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
-			// OLD let game = OngoingMatches.startGame(usersInCurrentGame);
 
 			console.log("User in the game >> ", usersInCurrentGame);
 
@@ -83,9 +82,20 @@ const start = (server) => {
 			}));
 		});
 
+		socket.on("userLeftGame", (gameId) => {
+
+			console.log("Entered backend socket");
+
+			if(gameId === null) {
+				console.log("ERROR, gameId === NULL");
+			}
+
+			io.to(gameId).emit("endGame");
+		});
+
 		socket.on("getQuestion", (game) => {
 
-			let numOfQuestions = 2;
+			let numOfQuestions = 5;
 			let i = 0;
 
 			emitQuestions(game, i++);
@@ -109,16 +119,12 @@ const start = (server) => {
 			io.to(game.id).emit("receiveQuestion", { question: gameRepository.getQuestion(game, i) });
 		};
 
+
 		socket.on("answerQuestion", (data) => {
 
-			//console.log("data.game >> ", data.game);
-			console.log("data.username >> ", data.username);
-			console.log("data.isCorrect >> ", data.isCorrect);
-
 			gameRepository.answerQuestion(data.game, data.username, data.isCorrect);
-
-
 		});
+
 
 		/**
 		 * On disconnection
@@ -127,7 +133,6 @@ const start = (server) => {
 			ActivePlayers.removeSocket(socket.id);
 			//OngoingMatches.forfeit(userId);
 		});
-
 	});
 };
 

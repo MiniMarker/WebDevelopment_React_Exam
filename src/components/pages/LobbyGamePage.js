@@ -48,6 +48,11 @@ class LobbyGamePage extends React.Component {
 	};
 
 	componentWillUnmount() {
+
+		if(this.state.game !== null) {
+			this.socket.emit("userLeftGame", (this.state.game.id));
+		}
+
 		this.socket.disconnect();
 	}
 
@@ -93,7 +98,7 @@ class LobbyGamePage extends React.Component {
 		});
 
 		//Subscribe to emits from "login"
-		this.socket.on("login", (data) => {
+		this.socket.on("login", () => {
 			this.setState({errorMsg: "Connected to Server."});
 		});
 	};

@@ -1,4 +1,3 @@
-const quizRepository = require("./quizRepository");
 const userRepository = require("./userRepository");
 const gameRepository = require("./gameRepository");
 

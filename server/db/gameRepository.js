@@ -43,7 +43,7 @@ const getRandomGame = () => {
 	randomQuiz.id = uuid();
 	randomQuiz.playersAnswers = [];
 
-	//console.log("getRandomGame >> ", randomQuiz);
+	//removeAllPlayers(randomQuiz);
 
 	return randomQuiz;
 };
@@ -58,22 +58,22 @@ const getRandomGame = () => {
 
 };*/
 
-const getAllGames = () => {
+/*const getAllGames = () => {
 
 	return Array.from(games);
 
-};
+};*/
 
 const getGame = (id) => {
 
 	return games.get(id);
 };
 
-const deleteGame = (id) => {
+/*const deleteGame = (id) => {
 	games.delete(id)
-};
+};*/
 
-const updateGame = (id, updatedValues) => {
+/*const updateGame = (id, updatedValues) => {
 
 	if(getGame(id) === null) {
 		return null;
@@ -87,7 +87,7 @@ const updateGame = (id, updatedValues) => {
 	let oldGame = getGame(id);
 
 	oldGame.name = updatedValues.name;
-};
+};*/
 
 const addPlayerToGame = (game, username) => {
 
@@ -96,14 +96,23 @@ const addPlayerToGame = (game, username) => {
 		return false;
 	}
 
-	let userInfo = {
-		username,
-		score: []
-	};
+	game.playersAnswers.push({
+		username, score: 0
+	});
 
-	//game.players.push(userInfo);
 	game.players.push(username);
 	return true;
+};
+
+const removeAllPlayers  = (game) => {
+
+	if(getGame(game) === null) {
+		console.log("Could not find game", game);
+		return false;
+	}
+
+	game.players.length = 0;
+
 };
 
 
@@ -124,9 +133,11 @@ const createQuestion = (game, id, question, ans1, ans2, ans3, ans4, correctAnsIn
 	game.questions.push(input);
 };
 
+/*
 const getAllQuestions = (game) => {
 	return game.questions;
 };
+*/
 
 const getQuestion = (game, index) => {
 
@@ -137,15 +148,14 @@ const getQuestion = (game, index) => {
 	return game.questions[index];
 };
 
+/*
 const getRandomQuestion = (game) => {
 
 	const randomNum = Math.floor(Math.random() * game.questions.size);
 
 	return game.questions[randomNum]
 };
-
-
-
+*/
 
 /*
 *   ANSWERS
@@ -153,46 +163,44 @@ const getRandomQuestion = (game) => {
 
 const answerQuestion = (game, username, isCorrect)  => {
 
-	let score, oldValue;
+	let score;
+	let user = game.playersAnswers.filter((player) => {
+		return player.username === username;
+	});
+
+	console.log("Old answer values >> ", game.playersAnswers[0].score);
 
 	isCorrect ? score = 1 : score = 0;
 
-	game.playersAnswers[username] !== undefined
-		? oldValue = game.playersAnswers[username].result
-		: oldValue = 0;
+	game.playersAnswers[0].score += score;
 
-	console.log("oldValue", oldValue);
+	console.log("Updated answer values >> ", game.playersAnswers[0].score);
 
-	game.playersAnswers[username] = {
-		result: oldValue + score
-	};
-
-	console.log("print from AnswerQuestion", game.playersAnswers);
 };
 
 const getPlayerAnswers = (game) => {
 
-	game.playersAnswers.forEach((player) => {
+	/*game.playersAnswers.forEach((player) => {
 
 		scoreSum = 0;
 
 		let sum = player.forEach((score) => {
 			return sum + score;
 		})
-	})
+	})*/
 };
 
 module.exports = {
 	createGame,
-	getAllGames,
+	//getAllGames,
 	getGame,
-	updateGame,
+	//updateGame,
 	getRandomGame,
 	addPlayerToGame,
-	deleteGame,
+	//deleteGame,
 	createQuestion,
-	getAllQuestions,
+	//getAllQuestions,
 	getQuestion,
-	getRandomQuestion,
+	//getRandomQuestion,
 	answerQuestion
 };

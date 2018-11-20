@@ -42,4 +42,4 @@ const deleteGame = (gameId) => {
 	gameIdToGame.delete(game.gameId);
 };
 
-module.exports = {startGame};
+//module.exports = {startGame};

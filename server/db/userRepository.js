@@ -12,7 +12,6 @@
 //const users = new Map(Object.entries(User));
 const users = new Map();
 
-
 function getUser(username){
 
 	return users.get(username);

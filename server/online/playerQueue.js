@@ -51,31 +51,6 @@ const getAllUsersInQueue = () => {
 	return queue;
 };
 
-/*
-const takeUser = () => {
-
-	if(queue.length === 0){
-		return null;
-	}
-
-	return queue.shift();
-};
-*/
-
-/*
-const takeMultipleUsers = (numberOfUsers) => {
-
-	let users = [];
-
-	for(let i = 0; i < numberOfUsers; i++) {
-		users.push(queue.shift());
-	}
-
-	return users;
-
-};
-*/
-
 /**
  * Take all users (FIFO) from the queue
  * @returns {Array} Array of all users that were taken from the queue

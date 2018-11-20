@@ -6,7 +6,6 @@ const cors = require('cors');
 
 const passport = require("./passport");
 const authRoutes = require('../routes/authRoutes');
-const matchRoutes = require('../routes/matchRoutes');
 
 const app = express();
 
@@ -43,17 +42,10 @@ app.use(passport.session());
 
 //--- Routes -----------
 app.use('/api', authRoutes);
-app.use('/api', matchRoutes);
 
 //handling 404
-/*
 app.use((req, res) => {
-	res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
-});
-*/
-
-app.all('*', function (req, res) {
-	res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html')) /* <= Where my ng-view is located */
+	res.sendFile(path.resolve(__dirname, '..', '..', 'public', 'index.html'));
 });
 
 module.exports = app;

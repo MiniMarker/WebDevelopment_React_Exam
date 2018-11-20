@@ -12,7 +12,7 @@ class JoinGamePage extends React.Component {
 		this.state = {
 			games: []
 		}
-	}
+	};
 
 	// ############## LIFECYCLE FUNCTIONS ##############
 	async componentDidMount() {

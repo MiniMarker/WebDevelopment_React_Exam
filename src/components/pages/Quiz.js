@@ -13,28 +13,42 @@ export class Quiz extends React.Component {
 			socket: this.props.socket,
 			isCorrect: null,
 			authUser: this.props.authUser,
-			gameIsDone: false
+			gameIsDone: false,
+			questionAnswered: false
 		};
 	};
 
 	componentDidMount() {
 		this.state.socket.on("receiveQuestion", (data) => {
+
+			//console.log("receiveQuestion >> ", data);
+
 			this.setState({
 				question: data.question,
-				isCorrect: null
+				isCorrect: null,
+				questionAnswered: false
 			});
 		});
 
 		this.state.socket.on("endGame", () => {
+
+			console.log("Received endGame emit");
+
 			this.setState({
 				gameIsDone: true
 			});
 		});
 
 		this.state.socket.emit("getQuestion", (this.state.game));
-	}
+	};
 
 	answerQuestion = (index, question) => {
+		/*
+		if(this.state.questionAnswered === true) {
+			console.log("You can only answer a question once");
+			return;
+		}
+		*/
 
 		let resultString;
 
@@ -43,7 +57,8 @@ export class Quiz extends React.Component {
 			: resultString = "False...";
 
 		this.setState({
-			isCorrect: resultString
+			isCorrect: resultString,
+			questionAnswered: true
 		});
 
 		this.state.socket.emit("answerQuestion", ({
@@ -51,8 +66,6 @@ export class Quiz extends React.Component {
 			username: this.state.authUser,
 			isCorrect: index === question.correctAnsIndex
 		}));
-
-		//console.log(`Answer for "${question.question}" is ${isCorrect}`);
 	};
 
 
@@ -65,8 +78,6 @@ export class Quiz extends React.Component {
 				<div>
 					<h3>{this.state.question.question}</h3>
 
-					{this.state.isCorrect && <h2>{this.state.isCorrect}</h2>}
-
 					{this.state.question.answers.map((alternative, index) => {
 						return (
 							<div
@@ -77,6 +88,8 @@ export class Quiz extends React.Component {
 							</div>
 						)
 					})}
+
+					{this.state.isCorrect && <h2>{this.state.isCorrect}</h2>}
 				</div>
 
 				}
@@ -84,14 +97,15 @@ export class Quiz extends React.Component {
 		)
 	};
 
+	// TODO Remove the playerlist if not working highscore
 	renderScore = () => {
 		return (
 			<div>
 				<h2>Game is done!</h2>
 
-				{this.state.game && this.state.game.players.map((player) => {
+				{this.state.game && this.state.game.players.map((player, index) => {
 					return (
-						<div>
+						<div key={`player_${index}`}>
 							<p>{player}</p>
 						</div>
 					)
@@ -106,7 +120,6 @@ export class Quiz extends React.Component {
 	render() {
 		return (
 			<div>
-
 				{this.state.gameIsDone
 					? this.renderScore()
 					: this.renderQuestions()
