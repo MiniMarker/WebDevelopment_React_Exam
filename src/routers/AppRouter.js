@@ -7,9 +7,6 @@ import NotFoundPage from "../components/pages/NotFoundPage";
 import ProfilePage from "../components/pages/ProfilePage";
 import LoginPage from "../components/pages/LoginPage";
 import SignupPage from "../components/pages/SignupPage";
-import OnlineMatch from "../components/pages/Rooms/OnlineMatch";
-import HostGamePage from "../components/pages/Rooms/HostGamePage";
-import JoinGamePage from "../components/pages/Rooms/JoinGamePage";
 import LobbyGamePage from "../components/pages/LobbyGamePage";
 
 class AppRouter extends React.Component {
@@ -48,20 +45,6 @@ class AppRouter extends React.Component {
 						<Route
 							path="/lobbygame"
 							component={LobbyGamePage}/>
-
-
-						<Route
-							path="/host"
-							component={HostGamePage}/>
-
-						<Route
-							path="/join"
-							component={JoinGamePage}/>
-
-						<Route
-							path="/game"
-							component={OnlineMatch}/>
-
 
 						<Route component={NotFoundPage}/>
 					</Switch>

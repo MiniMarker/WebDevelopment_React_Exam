@@ -39,7 +39,15 @@ const size = () => {
  * @returns {boolean} status of the check
  */
 const hasUser = (username) => {
-	return queue.includes(username);
+
+	for(let user of queue) {
+		if(user.username === username) {
+			console.log(user);
+			return true;
+		}
+	}
+
+	return false;
 };
 
 /**

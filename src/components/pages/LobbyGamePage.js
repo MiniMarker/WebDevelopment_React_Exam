@@ -118,7 +118,6 @@ class LobbyGamePage extends React.Component {
 
 
 	joinGame = () => {
-
 		let data = {
 			username: this.props.auth.username
 		};
