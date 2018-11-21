@@ -5,12 +5,4 @@ node_js:
 
 cache: npm
 
-
 script: npm run test:run
-
-notifications:
-  email:
-    recipients:
-    - cfmarker@gmail.com
-    on_success: change # default: change
-    on_failure: change # default: always

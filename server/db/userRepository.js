@@ -1,15 +1,7 @@
-
 /*
-    Here we "simulate" a database with in-memory Map.
-    Furthermore, we do not deal with the "proper" handling of
-    passwords. Passwords should NEVER be saved in plain text,
-    but rather hashed with secure algorithms like BCrypt.
- */
+* This code is taken from Andrea Arcuri's course code for this course.
+* */
 
-//TODO use Map of entity object
-
-//import {User} from "../entities/User";
-//const users = new Map(Object.entries(User));
 const users = new Map();
 
 function getUser(username){

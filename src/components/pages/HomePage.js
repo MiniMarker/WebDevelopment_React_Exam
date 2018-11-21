@@ -39,12 +39,12 @@ export class HomePage extends React.Component {
 				<h3>Hi {this.props.auth.username}!</h3>
 
 				<p>This is a multiplayer Quiz game where you can play against a random component online</p>
+				<p>In this game you will get a random category of questions.</p>
+				<p>Each category has 8 questions, and you have 5 seconds to answer</p>
+				<p>At the end of the round you will get a score between 0 and 100</p>
+				<p>The best user will be announced as the winner</p>
 
-
-				{/*
-				<Link to={"/host"}>Host a game</Link> <br/>
-				<Link to={"/join"}>Join a game</Link> <br/>
-				*/}
+				<h4>Have fun!</h4>
 
 				<Link to={"/lobbygame"}>Lobby game</Link> <br/>
 			</div>

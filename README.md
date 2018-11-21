@@ -2,10 +2,10 @@
 
 ## Description
 This is my exam project for PG6300, which is a multiplayer Quiz Game made with React, Redux and WebSockets. <br/>
-In this Quiz Game every user has 5 seconds to answer the given Questions and there is 5 question in each round <br/>
+In this Quiz Game every user has 5 seconds to answer the given Questions and there is 8 question in each round <br/>
 The DB is for simplicity Mocked as arrays an Maps as the task said it would.
 
-## Features done
+## Feature requirements done
 - Implemented at least two pages that are linked with React Router
 - Implement state in at least one page
 - RESTful API with GET and POST with JSON 
@@ -18,16 +18,19 @@ The DB is for simplicity Mocked as arrays an Maps as the task said it would.
 - Redux on login state
 - SASS for styling
 
-### Not done features
-- Score and time taking
-    I was stuck on this problem for a while, i tried many different approaches, but every time another 
-    question was loaded from the server the scoring was wiped back to default (0).
+### Known bugs
+- Score
+    - If a user does'nt answer a question it will count the point as a correct answer at 0 sec, 
+    i didnt get the time to fix this bug, so I marked it for later FIXME
+    
+    
 
 ## How to run
 1. Clone this repo
 2. 
     a) Docker
     - from deploy folder run: 
+    - `docker-compose build`
     - `docker-compose up`
     
     b) Webpack and Node

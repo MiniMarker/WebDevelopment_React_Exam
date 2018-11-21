@@ -1,25 +1,29 @@
 {
-	"name": "exam_marchr16",
+	"name": "",
 	"version": "1.0.0",
 	"description": "This is my exam-delivery project in PG6300: Web Development and API-design",
 	"author": {
-		"name": "Christian Marker",
-		"email": "post@cmarker.no"
+		"name": "",
+		"email": ""
 	},
 	"license": "MIT",
 	"private": true,
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:MiniMarker/WebDevelopment_React_Exam.git"
+		"url": ""
 	},
 	"scripts": {
 		"test:run": "jest --config=jest.config.json",
 		"test:watch": "jest --config=jest.config.json --watchAll",
 		"test:cov": "jest --config=jest.config.json --coverage",
+
 		"dev": "webpack --mode development && npm run startNode",
 		"dev:webpack": "webpack-dev-server --open --mode development",
+
 		"build": "webpack --mode production",
-		"startNode": "node $NODE_DEBUG_OPTION server/server.js"
+
+		"startNode": "node $NODE_DEBUG_OPTION server/server.js",
+		"docker:run": "docker-compose up -d"
 	},
 	"keywords": [],
 	"dependencies": {

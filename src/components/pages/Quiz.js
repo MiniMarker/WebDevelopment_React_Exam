@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from 'react-router-dom';
-import Countdown from 'react-countdown-now';
 
 export class Quiz extends React.Component {
 
@@ -9,33 +8,51 @@ export class Quiz extends React.Component {
 
 		this.state = {
 			game: this.props.game,
-			questions: null,
 			socket: this.props.socket,
-			isCorrect: null,
 			authUser: this.props.authUser,
+			questions: null,
+			isCorrect: null,
 			gameIsDone: false,
-			questionAnswered: false
+			questionAnswered: null,
+			timestampOnReceivedQuestion: null,
+			playerScores: null
 		};
 	};
 
 	componentDidMount() {
+
 		this.state.socket.on("receiveQuestion", (data) => {
 
-			//console.log("receiveQuestion >> ", data);
+			if(this.state.questionAnswered === false) {
+				console.log("You have not answered the question..");
+			}
+
+			/*
+			if(this.state.questionAnswered === false) {
+
+				this.state.socket.emit("answerQuestion", ({
+					gameId: this.state.game.id,
+					username: this.state.authUser,
+					timestamp: 5000
+				}));
+			}
+			*/
 
 			this.setState({
 				question: data.question,
 				isCorrect: null,
-				questionAnswered: false
+				questionAnswered: false,
+				timestampOnReceivedQuestion: new Date().getTime()
 			});
 		});
 
-		this.state.socket.on("endGame", () => {
+		this.state.socket.on("endGame", (data) => {
 
 			console.log("Received endGame emit");
 
 			this.setState({
-				gameIsDone: true
+				gameIsDone: true,
+				playerScores: data.players
 			});
 		});
 
@@ -43,18 +60,21 @@ export class Quiz extends React.Component {
 	};
 
 	answerQuestion = (index, question) => {
-		/*
+
 		if(this.state.questionAnswered === true) {
 			console.log("You can only answer a question once");
 			return;
 		}
-		*/
 
-		let resultString;
+		let resultString, timestampOnAnswerQuestion;
 
-		index === question.correctAnsIndex
-			? resultString = "Correct!"
-			: resultString = "False...";
+		if(index === question.correctAnsIndex) {
+			resultString = "Correct!";
+			timestampOnAnswerQuestion = (new Date().getTime() - this.state.timestampOnReceivedQuestion);
+		} else {
+			resultString = "False...";
+			timestampOnAnswerQuestion = 5000;
+		}
 
 		this.setState({
 			isCorrect: resultString,
@@ -62,60 +82,72 @@ export class Quiz extends React.Component {
 		});
 
 		this.state.socket.emit("answerQuestion", ({
-			game: this.state.game,
+			gameId: this.state.game.id,
 			username: this.state.authUser,
-			isCorrect: index === question.correctAnsIndex
+			timestamp: timestampOnAnswerQuestion
 		}));
 	};
 
-
 	renderQuestions = () => {
 		return (
-			<div>
+			<div className={"quiz"}>
 				<h2>{this.state.game.name}</h2>
 
 				{this.state.question &&
-				<div>
-					<h3>{this.state.question.question}</h3>
+					<div>
+						<h3>{this.state.question.question}</h3>
 
-					{this.state.question.answers.map((alternative, index) => {
-						return (
-							<div
-								key={`ansIndex${index}`}
-								className={"question_alt"}
-								onClick={() => {this.answerQuestion(index, this.state.question)}}>
-								<p>{`${index}: ${alternative}`}</p>
-							</div>
-						)
-					})}
-
-					{this.state.isCorrect && <h2>{this.state.isCorrect}</h2>}
-				</div>
-
+						{this.state.question.answers.map((alternative, index) => {
+							return (
+								<div
+									key={`ansIndex${index}`}
+									className={"question_alt"}
+									onClick={() => {this.answerQuestion(index, this.state.question)}}>
+									<p>{`${index}: ${alternative}`}</p>
+								</div>
+							)
+						})}
+					</div>
 				}
+
+				{this.state.isCorrect && <h2>{this.state.isCorrect}</h2>}
 			</div>
 		)
 	};
 
-	// TODO Remove the playerlist if not working highscore
 	renderScore = () => {
 		return (
-			<div>
+			<div className={"quiz"}>
 				<h2>Game is done!</h2>
 
-				{this.state.game && this.state.game.players.map((player, index) => {
-					return (
-						<div key={`player_${index}`}>
-							<p>{player}</p>
-						</div>
-					)
-				})}
+				<table>
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>Score</th>
+						</tr>
+					</thead>
 
+					<tbody>
+						{this.state.playerScores && this.state.playerScores.map((player, index) => {
+							return (
+								<tr key={`player_${index}`}>
+
+									{index === 0
+										? <td>WINNER   {player.username}</td>
+										: <td>{player.username}</td>}
+
+									<td>{(100 - Math.floor(player.score / 400))}</td>
+								</tr>
+							)
+						})}
+					</tbody>
+				</table>
+				<br/> <br/>
 				<Link to={"/"}>Go home</Link>
 			</div>
 		)
 	};
-
 
 	render() {
 		return (

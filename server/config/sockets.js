@@ -1,9 +1,9 @@
 const socketIo = require("socket.io");
 const Token = require("./tokens");
 const PlayerQueue = require('../online/playerQueue');
-const OngoingMatches = require('../online/ongoingMatches');
 const ActivePlayers = require('../online/activePlayers');
 const gameRepository = require("../db/gameRepository");
+const ongoingGameRepository = require("../db/ongoingGameRepository");
 
 let io;
 
@@ -38,43 +38,36 @@ const start = (server) => {
 
 		socket.on("joinGame", (data) => {
 
+			/*
 			//check if player is already in the queue
 			if(PlayerQueue.hasUser(data.username)) {
 				socket.emit("update", { errorMsg: "User is already in the queue" });
 				return;
 			}
-
-			//TODO implement this after game logic is finished
-			//OngoingMatches.forfeit(req.user.id);
+			*/
 
 			PlayerQueue.addUser(data.username);
 
 			socket.emit("updateNumberOfPlayers", (PlayerQueue.size()));
-
 		});
 
 		socket.on("startGame", () => {
 
 			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
 
-			console.log("User in the game >> ", usersInCurrentGame);
-
-			/*
-			//TODO uncomment this to set requirement for min 2 users to start the game
 			if(usersInCurrentGame === null) {
 				socket.emit("update", {
-					errorMsg: "It needs to be at least 3 users in the game"
+					errorMsg: "It needs to be at least 2 users in the game"
 				});
 				return;
 			}
-			*/
 
-			let game = gameRepository.getRandomGame();
+			let game = ongoingGameRepository.startGame();
 
-			usersInCurrentGame.forEach((user) => gameRepository.addPlayerToGame(game, user));
-
-			//All players join the socket room
-			usersInCurrentGame.forEach((user) => ActivePlayers.getSocket(user).join(game.id));
+			usersInCurrentGame.forEach((user) => {
+				ongoingGameRepository.addPlayerToGame(game.id, user);
+				ActivePlayers.getSocket(user).join(game.id)
+			});
 
 			io.to(game.id).emit("renderGame", ({
 				game: game,
@@ -82,20 +75,23 @@ const start = (server) => {
 			}));
 		});
 
+		// Handle if a user leaves the game during a match
 		socket.on("userLeftGame", (gameId) => {
 
-			console.log("Entered backend socket");
-
-			if(gameId === null) {
+			if(gameId === null || gameId === undefined) {
 				console.log("ERROR, gameId === NULL");
 			}
 
-			io.to(gameId).emit("endGame");
+			io.to(gameId).emit("endGame", ({
+				players: ongoingGameRepository.getPlayersInOngoingGame(gameId)
+			}));
+
+			ongoingGameRepository.endGame(gameId);
 		});
 
 		socket.on("getQuestion", (game) => {
 
-			let numOfQuestions = 5;
+			let numOfQuestions = 8;
 			let i = 0;
 
 			emitQuestions(game, i++);
@@ -107,22 +103,25 @@ const start = (server) => {
 				} else {
 					clearInterval(interval);
 
-					io.to(game.id).emit("endGame");
+					io.to(game.id).emit("endGame", ({
+						players: ongoingGameRepository.getPlayersInOngoingGame(game.id)
+					}));
 				}
-
 			}, 5000);
 
 		});
 
 		//Help method for getQuestion
 		const emitQuestions = (game, i) => {
-			io.to(game.id).emit("receiveQuestion", { question: gameRepository.getQuestion(game, i) });
+			io.to(game.id)
+				.emit("receiveQuestion", {
+					question: gameRepository.getQuestion(game, i)
+				});
 		};
 
-
+		// Handle Answer question event,
 		socket.on("answerQuestion", (data) => {
-
-			gameRepository.answerQuestion(data.game, data.username, data.isCorrect);
+			ongoingGameRepository.updateTimeScore(data.gameId, data.username, data.timestamp);
 		});
 
 
@@ -131,7 +130,6 @@ const start = (server) => {
 		 */
 		socket.on("disconnect", () => {
 			ActivePlayers.removeSocket(socket.id);
-			//OngoingMatches.forfeit(userId);
 		});
 	});
 };
