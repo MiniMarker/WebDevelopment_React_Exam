@@ -23,6 +23,10 @@ export class Quiz extends React.Component {
 
 		this.state.socket.on("receiveQuestion", (data) => {
 
+			if(this.state.questionAnswered === false) {
+				console.log("You have not answered the question..");
+			}
+
 			/*
 			if(this.state.questionAnswered === false) {
 
