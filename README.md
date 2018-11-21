@@ -20,7 +20,7 @@ The DB is for simplicity Mocked as arrays an Maps as the task said it would.
 
 ### Known bugs
 - Score
-    - If a user doesn't answer a question it will count the point as a correct answer at 0 sec, 
+    - If a user does'nt answer a question it will count the point as a correct answer at 0 sec, 
     i didnt get the time to fix this bug, so I marked it for later FIXME
     
     

@@ -55,9 +55,6 @@ const start = (server) => {
 
 			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
 
-			console.log(usersInCurrentGame);
-
-			//TODO uncomment this to set requirement for min 2 users to start the game
 			if(usersInCurrentGame === null) {
 				socket.emit("update", {
 					errorMsg: "It needs to be at least 2 users in the game"
@@ -66,8 +63,6 @@ const start = (server) => {
 			}
 
 			let game = ongoingGameRepository.startGame();
-
-			console.log("User in the game >> ", usersInCurrentGame);
 
 			usersInCurrentGame.forEach((user) => {
 				ongoingGameRepository.addPlayerToGame(game.id, user);

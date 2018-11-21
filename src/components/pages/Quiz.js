@@ -134,7 +134,7 @@ export class Quiz extends React.Component {
 								<tr key={`player_${index}`}>
 
 									{index === 0
-										? <td>WINNER {player.username}</td>
+										? <td>WINNER   {player.username}</td>
 										: <td>{player.username}</td>}
 
 									<td>{(100 - Math.floor(player.score / 400))}</td>

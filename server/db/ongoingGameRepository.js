@@ -12,8 +12,6 @@ const startGame = () => {
 
 	Object.assign(game, gameRepository.getRandomGame());
 
-	console.log("Created game: ", game);
-
 	ongoingGames.set(game.id, game);
 
 	return game;
@@ -37,7 +35,6 @@ const updateTimeScore = (gameId, username, timestamp) => {
 
 	let player = game.players.find(player => player.username === username);
 	player.score += timestamp;
-	console.log(`player: ${player.username}.score = `, player.score);
 };
 
 const getOngoingGame = (gameId) => {
