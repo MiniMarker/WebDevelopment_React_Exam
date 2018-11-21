@@ -55,15 +55,16 @@ const start = (server) => {
 
 			let usersInCurrentGame = PlayerQueue.takeAllUsersInQueue();
 
-			/*
+			console.log(usersInCurrentGame);
+
 			//TODO uncomment this to set requirement for min 2 users to start the game
 			if(usersInCurrentGame === null) {
 				socket.emit("update", {
-					errorMsg: "It needs to be at least 3 users in the game"
+					errorMsg: "It needs to be at least 2 users in the game"
 				});
 				return;
 			}
-			*/
+
 			let game = ongoingGameRepository.startGame();
 
 			console.log("User in the game >> ", usersInCurrentGame);
@@ -95,7 +96,7 @@ const start = (server) => {
 
 		socket.on("getQuestion", (game) => {
 
-			let numOfQuestions = 5;
+			let numOfQuestions = 8;
 			let i = 0;
 
 			emitQuestions(game, i++);

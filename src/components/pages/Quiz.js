@@ -23,6 +23,7 @@ export class Quiz extends React.Component {
 
 		this.state.socket.on("receiveQuestion", (data) => {
 
+			/*
 			if(this.state.questionAnswered === false) {
 
 				this.state.socket.emit("answerQuestion", ({
@@ -30,8 +31,8 @@ export class Quiz extends React.Component {
 					username: this.state.authUser,
 					timestamp: 5000
 				}));
-
 			}
+			*/
 
 			this.setState({
 				question: data.question,
@@ -85,7 +86,7 @@ export class Quiz extends React.Component {
 
 	renderQuestions = () => {
 		return (
-			<div>
+			<div className={"quiz"}>
 				<h2>{this.state.game.name}</h2>
 
 				{this.state.question &&
@@ -112,7 +113,7 @@ export class Quiz extends React.Component {
 
 	renderScore = () => {
 		return (
-			<div>
+			<div className={"quiz"}>
 				<h2>Game is done!</h2>
 
 				<table>
@@ -127,14 +128,18 @@ export class Quiz extends React.Component {
 						{this.state.playerScores && this.state.playerScores.map((player, index) => {
 							return (
 								<tr key={`player_${index}`}>
-									<td>{player.username}</td>
-									<td>{(100 - Math.floor(player.score / 250))}</td>   {/*TODO Update divider number to 250*/}
+
+									{index === 0
+										? <td>WINNER {player.username}</td>
+										: <td>{player.username}</td>}
+
+									<td>{(100 - Math.floor(player.score / 400))}</td>
 								</tr>
 							)
 						})}
 					</tbody>
 				</table>
-
+				<br/> <br/>
 				<Link to={"/"}>Go home</Link>
 			</div>
 		)

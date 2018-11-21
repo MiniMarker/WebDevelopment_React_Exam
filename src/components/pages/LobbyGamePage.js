@@ -156,7 +156,7 @@ class LobbyGamePage extends React.Component {
 		return (
 			<div className={"container"}>
 
-				{this.state.errorMsg}
+				<p>{this.state.errorMsg}</p>
 				<br/><br/>
 
 				{this.props.auth.username

@@ -17,8 +17,6 @@ const router = express.Router();
  */
 router.post("/joinqueue", (req, res) => {
 
-	//TODO If match has no users, make first to join a host
-
 	//if user isn't logged in
 	if(!req.user) {
 		res.status(401).send();
@@ -48,7 +46,6 @@ router.post("/joinqueue", (req, res) => {
  * 2. Iterate through all users in queue from the front (FIFO) and remove them from the queue
  * 3. Return a 201 with all users in the body of the payload
  *
- * TODO maybe cap this to a max amount of players?
  */
 router.post("/startgame", (req, res) => {
 

@@ -8,10 +8,27 @@
 	border: 2px solid rgb(40,40,40);
 }
 
+.quiz {
+	display: flex;
+	flex-direction: column;
+
+	* {
+		justify-content: center;
+	}
+}
+
 .question_alt:hover {
 	cursor: pointer;
 }
 
 .countdown {
 	font-size: 2em;
+}
+
+table {
+	width: 400px;
+
+	tr {
+		text-align: center;
+	}
 }

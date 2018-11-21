@@ -3,7 +3,7 @@ const WsHandler = require("./config/sockets");
 const server = require("http").Server(app);
 
 //Default data
-const defaultData = require("../server/db/DefaultData");w
+const defaultData = require("../server/db/DefaultData");
 defaultData.createDefaultUsers();
 defaultData.createDefaultGames();
 
