@@ -23,10 +23,26 @@ passport.use(new LocalStrategy({
 	}
 ));
 
+passport.serializeUser((user, done) => {
+	done(null, user.username)
+});
+
+passport.deserializeUser((username, done) => {
+	const user = UserRepository.getUser(username);
+
+	if (user !== undefined) {
+		done(null, user);
+	} else {
+		done(null, false);
+	}
+});
+
+/*
 passport.serializeUser(function (user, done) {
 	done(null, user.username);
 });
-
+*/
+/*
 passport.deserializeUser(function (username, done) {
 
 	const user = UserRepository.getUser(username);
@@ -37,5 +53,5 @@ passport.deserializeUser(function (username, done) {
 		done(null, false);
 	}
 });
-
+*/
 module.exports = passport;
