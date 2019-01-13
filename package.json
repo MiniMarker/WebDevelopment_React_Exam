@@ -1,27 +1,24 @@
 {
-	"name": "",
+	"name": "PG6300_Exam2018",
 	"version": "1.0.0",
 	"description": "This is my exam-delivery project in PG6300: Web Development and API-design",
 	"author": {
-		"name": "",
-		"email": ""
+		"name": "Christian Marker",
+		"email": "post@cmarker.no"
 	},
 	"license": "MIT",
-	"private": true,
+	"private": false,
 	"repository": {
 		"type": "git",
-		"url": ""
+		"url": "https://github.com/MiniMarker/WebDevelopment_React_Exam.git"
 	},
 	"scripts": {
 		"test:run": "jest --config=jest.config.json",
 		"test:watch": "jest --config=jest.config.json --watchAll",
 		"test:cov": "jest --config=jest.config.json --coverage",
-
 		"dev": "webpack --mode development && npm run startNode",
 		"dev:webpack": "webpack-dev-server --open --mode development",
-
 		"build": "webpack --mode production",
-
 		"startNode": "node $NODE_DEBUG_OPTION server/server.js",
 		"docker:run": "docker-compose up -d"
 	},
@@ -30,7 +27,7 @@
 		"@babel/plugin-transform-regenerator": "^7.0.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"body-parser": "^1.18.3",
-		"cors": "^2.8.4",
+		"cors": "^2.8.5",
 		"css-loader": "0.28.4",
 		"express": "^4.16.4",
 		"express-session": "^1.15.6",
@@ -40,12 +37,12 @@
 		"normalize.css": "8.0.0",
 		"passport": "^0.4.0",
 		"passport-local": "^1.0.0",
-		"react": "^16.4.2",
+		"react": "^16.7.0",
 		"react-addons-shallow-compare": "15.6.0",
 		"react-addons-test-utils": "^15.6.2",
 		"react-countdown-now": "^1.3.0",
 		"react-dates": "12.3.0",
-		"react-dom": "^16.4.2",
+		"react-dom": "^16.7.0",
 		"react-modal": "3.6.1",
 		"react-redux": "5.0.5",
 		"react-router-dom": "^4.3.1",
@@ -54,11 +51,11 @@
 		"redux-react-session": "^2.5.0",
 		"redux-thunk": "^2.3.0",
 		"sass-loader": "6.0.6",
-		"socket.io": "^2.1.1",
-		"socket.io-client": "^2.1.1",
+		"socket.io": "^2.2.0",
+		"socket.io-client": "^2.2.0",
 		"style-loader": "0.18.2",
 		"supertest": "^3.1.0",
-		"uuid": "^3.1.0",
+		"uuid": "^3.3.2",
 		"validator": "8.0.0"
 	},
 	"devDependencies": {
@@ -73,13 +70,13 @@
 		"babel-preset-es2015": "^6.24.1",
 		"babel-preset-react": "^6.24.1",
 		"babel-preset-stage-0": "^6.0.15",
-		"enzyme": "^3.3.0",
-		"enzyme-adapter-react-16": "^1.1.1",
+		"enzyme": "^3.8.0",
+		"enzyme-adapter-react-16": "^1.7.1",
 		"enzyme-to-json": "3.3.4",
 		"jest": "^23.4.2",
 		"react-test-renderer": "15.6.1",
-		"webpack": "^4.16.4",
-		"webpack-cli": "^3.1.0",
-		"webpack-dev-server": "^3.1.5"
+		"webpack": "^4.28.4",
+		"webpack-cli": "^3.2.1",
+		"webpack-dev-server": "^3.1.14"
 	}
 }
